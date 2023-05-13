@@ -1,7 +1,7 @@
 <script>
 	import MessageService from './messageService';
 
-	const messenger = new MessageService(onMessageReceived);
+	const messenger = new MessageService(onMessageReceived, onUpdate);
 
 	let messages = [];
 	let isSubmitDisabled = false;
@@ -11,6 +11,11 @@
 		isSubmitDisabled = false;
 		input.value = '';
 		input.focus();
+	}
+
+	function onUpdate(update) {
+		console.log('new update', update);
+		messages = update;
 	}
 
 	function onMessageReceived(messageText) {
