@@ -1,6 +1,8 @@
 import { Server } from 'socket.io';
 import express from 'express';
 import { createServer } from 'http';
+import helmet from 'helmet';
+import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import MessageStore from './messageStore.js';
@@ -21,6 +23,8 @@ io.on('connection', (socket) => {
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(currentDir, 'public')));
+app.use(helmet());
+app.use(compression());
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log(`Listening on port ${port}...`));
