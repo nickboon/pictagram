@@ -5,10 +5,6 @@ export default class Message {
 	}
 
 	get isEmpty() {
-		return this.symbols.lenth === 0;
-	}
-
-	clear() {
-		this.symbols.length = 0;
+		return this.symbols.length === 0;
 	}
 }

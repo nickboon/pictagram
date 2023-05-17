@@ -9,15 +9,17 @@
 	};
 </script>
 
-<div class="positionable_container">
-	{#each message.symbols as symbol, index}
-		<span
-			class="symbol{grouped(index)}"
-			style="font-size:{symbol.fontSize}px;opacity:{symbol.opacity};transform: translate({symbol.x}pt, {symbol.y}pt) rotate({symbol.angle}deg) scaleX({symbol.scaleX}) scaleY({symbol.scaleY});"
-			>{symbol.text}</span
-		>
-	{/each}
-</div>
+{#if !message.isEmpty}
+	<div class="positionable_container">
+		{#each message.symbols as symbol, index}
+			<span
+				class="symbol{grouped(index)}"
+				style="font-size:{symbol.fontSize}px;opacity:{symbol.opacity};transform: translate({symbol.x}pt, {symbol.y}pt) rotate({symbol.angle}deg) scaleX({symbol.scaleX}) scaleY({symbol.scaleY});"
+				>{symbol.text}</span
+			>
+		{/each}
+	</div>
+{/if}
 
 <style>
 	.positionable_container {

@@ -13,11 +13,13 @@
 	let group = false;
 	$: symbol = viewed;
 	let messages = [];
-	let isSubmitDisabled = false;
+	$: isSubmitDisabled = message.isEmpty;
 
 	function reset() {
 		isSubmitDisabled = false;
-		message.clear();
+		console.log('clear');
+		message.symbols.length = 0;
+		console.log(message.symbols);
 	}
 
 	function onUpdate(update) {
@@ -45,10 +47,7 @@
 	<h1 class:symbol>{viewed || 'Pictagram'}</h1>
 	<SymbolSelect bind:message bind:viewed />
 	<MessageToolbar bind:message bind:group />
-	{#if !message.isEmpty}
-		<Message {message} bind:group />
-	{/if}
-
+	<Message {message} bind:group />
 	<form on:submit|preventDefault={onSubmit}>
 		<Button type="submit" disabled={isSubmitDisabled}>
 			<span class="large symbol">📨︎</span>
