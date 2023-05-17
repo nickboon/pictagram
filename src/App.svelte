@@ -1,25 +1,31 @@
 <script>
 	import MessageService from './messageService';
+	import SymbolSelect from './SymbolSelect.svelte';
+	import MessageToolbar from './MessageToolbar.svelte';
+	import Message from './Message.svelte';
+	import Button from './Button.svelte';
+	import MessageObject from './message';
 
 	const messenger = new MessageService(onMessageReceived, onUpdate);
 
+	let message = new MessageObject();
+	let viewed = false;
+	let group = false;
+	$: symbol = viewed;
 	let messages = [];
 	let isSubmitDisabled = false;
-	let input;
 
 	function reset() {
 		isSubmitDisabled = false;
-		input.value = '';
-		input.focus();
+		message.clear();
 	}
 
 	function onUpdate(update) {
-		console.log('new update', update);
 		messages = update;
 	}
 
-	function onMessageReceived(messageText) {
-		messages = [messageText, ...messages];
+	function onMessageReceived(recievedMessage) {
+		messages = [recievedMessage, ...messages];
 	}
 
 	function onMessageSent(error) {
@@ -27,22 +33,41 @@
 		if (error) return console.log(error);
 	}
 
-	function onSubmit(event) {
+	function onSubmit() {
 		isSubmitDisabled = true;
-		const messageText = event.target.elements.message.value;
-		messenger.sendMessage(messageText, onMessageSent);
+		message.date = Date();
+
+		messenger.sendMessage(message, onMessageSent);
 	}
 </script>
 
 <main>
-	<h1>Pictagram</h1>
+	<h1 class:symbol>{viewed || 'Pictagram'}</h1>
+	<SymbolSelect bind:message bind:viewed />
+	<MessageToolbar bind:message bind:group />
+	{#if !message.isEmpty}
+		<Message {message} bind:group />
+	{/if}
+
 	<form on:submit|preventDefault={onSubmit}>
-		<input type="text" name="message" bind:this={input} />
-		<button type="submit" disabled={isSubmitDisabled}>Send</button>
+		<Button type="submit" disabled={isSubmitDisabled}>
+			<span class="large symbol">📨︎</span>
+		</Button>
 	</form>
 	<ul>
 		{#each messages as message}
-			<li>{message}</li>
+			<li>
+				<span class="smalltext">{message.date.toString().slice(0, 24)}</span>
+				<div class="positionable_container">
+					{#each message.symbols as symbol}
+						<span
+							class="symbol positionable"
+							style="font-size:{symbol.fontSize}px;opacity:{symbol.opacity};transform: translate({symbol.x}pt, {symbol.y}pt) rotate({symbol.angle}deg) scaleX({symbol.scaleX}) scaleY({symbol.scaleY});"
+							>{symbol.text}</span
+						>
+					{/each}
+				</div>
+			</li>
 		{/each}
 	</ul>
 </main>
@@ -53,22 +78,55 @@
 		padding: 1em;
 		max-width: 240px;
 		margin: 0 auto;
+		height: 100%;
 	}
 
 	h1 {
 		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
 		font-weight: 100;
+		height: 6rem;
+		text-transform: uppercase;
 	}
 
 	ul {
 		list-style-type: none;
+		margin-top: 1.5rem;
+		border-top: 1px solid #555;
+		text-align: left;
+		padding: 1rem 0;
+	}
+
+	li {
+		margin-top: 1rem;
+	}
+
+	.large.symbol {
+		font-size: 2rem;
+	}
+
+	.smalltext {
+		font-size: xx-small;
+	}
+
+	.positionable {
+		display: inline-block;
+	}
+
+	.positionable_container {
+		margin: 0.5rem 0 2rem;
+		min-height: 4rem;
+		max-height: 10rem;
+		overflow: hidden;
+		padding: 0.5rem;
+		text-align: left;
 	}
 
 	@media (min-width: 640px) {
+		h1 {
+			font-size: 4em;
+		}
 		main {
-			max-width: none;
+			max-width: 50%;
 		}
 	}
 </style>
