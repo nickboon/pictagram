@@ -11,15 +11,13 @@
 	let message = new MessageObject();
 	let viewed = false;
 	let group = false;
-	$: symbol = viewed;
 	let messages = [];
+	$: symbol = viewed;
 	$: isSubmitDisabled = message.isEmpty;
 
 	function reset() {
 		isSubmitDisabled = false;
-		console.log('clear');
 		message.symbols.length = 0;
-		console.log(message.symbols);
 	}
 
 	function onUpdate(update) {
