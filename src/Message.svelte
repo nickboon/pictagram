@@ -21,10 +21,12 @@
 
 <style>
 	.positionable_container {
-		max-height: 10rem;
+		height: 10rem;
+		outline: 1px solid #555;
 		overflow: hidden;
 		padding: 0.5rem;
 		text-align: left;
+		margin-bottom: 0.5rem;
 	}
 
 	.grouped {

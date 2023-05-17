@@ -60,7 +60,7 @@
 <style>
 	div {
 		margin: 2rem 0;
-		max-height: 4rem;
+		max-height: 8rem;
 		overflow-y: scroll;
 		scrollbar-color: transparent;
 	}

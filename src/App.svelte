@@ -84,8 +84,9 @@
 	h1 {
 		color: #ff3e00;
 		font-weight: 100;
-		height: 6rem;
+		height: 4rem;
 		text-transform: uppercase;
+		display: inline-block;
 	}
 
 	ul {
@@ -100,11 +101,16 @@
 		margin-top: 1rem;
 	}
 
+	form {
+		margin: 0.5rem 0 3rem;
+	}
+
 	.large.symbol {
 		font-size: 2rem;
 	}
 
 	.smalltext {
+		font-family: monospace;
 		font-size: xx-small;
 	}
 
