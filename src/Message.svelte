@@ -1,34 +1,34 @@
 <script>
+	import Symbol from './Symbol.svelte';
 	import Message from './message';
 
 	export let message = new Message();
-	export let group;
+	export let group = false;
 
 	$: grouped = function (index) {
-		return group === index ? ` grouped` : '';
+		return group === index ? 'grouped' : '';
 	};
+
+	function style(symbol) {
+		return `font-size:${symbol.fontSize}px;opacity:${symbol.opacity};transform: translate(${symbol.x}pt, ${symbol.y}pt) rotate(${symbol.angle}deg) scaleX(${symbol.scaleX}) scaleY(${symbol.scaleY});`;
+	}
 </script>
 
-{#if !message.isEmpty}
-	<div class="positionable_container">
-		{#each message.symbols as symbol, index}
-			<span
-				class="symbol{grouped(index)}"
-				style="font-size:{symbol.fontSize}px;opacity:{symbol.opacity};transform: translate({symbol.x}pt, {symbol.y}pt) rotate({symbol.angle}deg) scaleX({symbol.scaleX}) scaleY({symbol.scaleY});"
-				>{symbol.text}</span
-			>
-		{/each}
-	</div>
-{/if}
+<article>
+	{#each message.symbols as symbol, index}
+		<Symbol style={style(symbol)}>
+			<span class={grouped(index)}>{symbol.text}</span>
+		</Symbol>
+	{/each}
+</article>
 
 <style>
-	.positionable_container {
+	article {
 		height: 10rem;
-		outline: 1px solid #555;
+		margin: 0.5rem 0 2rem;
 		overflow: hidden;
 		padding: 0.5rem;
 		text-align: left;
-		margin-bottom: 0.5rem;
 	}
 
 	.grouped {

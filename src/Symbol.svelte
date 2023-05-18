@@ -1,7 +1,5 @@
 <script>
-	export let code;
-
-	const text = `&#${code};&#xFE0E;`;
+	export let style;
 </script>
 
-<span class="symbol">{@html text}</span>
+<span class="symbol" {style}><slot /></span>

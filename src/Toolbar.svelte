@@ -1,4 +1,5 @@
 <script>
+	import Symbol from './Symbol.svelte';
 	import Button from './Button.svelte';
 	import Message from './message';
 
@@ -114,29 +115,29 @@
 						}}
 						on:mouseleave={onMouseleave}
 					>
-						<span class="symbol">{symbol.text}</span>
+						<Symbol>{symbol.text}</Symbol>
 					</Button>
 				</li>
 			{/each}
 		</ul>
 		<span class="spacer" />
 		<div class="tools">
-			<Button on:click={onGrow}>+</Button>
-			<Button on:click={onShrink}>-</Button>
-			<Button on:click={onShiftLeft}>↞︎</Button>
-			<Button on:click={onShiftRight}>↠︎</Button>
-			<Button on:click={onShiftUp}>↟︎</Button>
-			<Button on:click={onShiftDown}>↡︎</Button>
-			<Button on:click={onNudgeLeft}>←︎</Button>
-			<Button on:click={onNudgeRight}>→︎</Button>
-			<Button on:click={onNudgeUp}>↑︎</Button>
-			<Button on:click={onNudgeDown}>↓︎</Button>
-			<Button on:click={onRotateCcw}>↶︎</Button>
-			<Button on:click={onRotateCw}>↷︎</Button>
-			<Button on:click={onFlipX}>⬗</Button>
-			<Button on:click={onFlipY}>⬘</Button>
-			<Button on:click={onDecreaseOpacity}>👻︎</Button>
-			<Button on:click={onDelete}>🗑︎</Button>
+			<Button on:click={onGrow}><Symbol>+</Symbol></Button>
+			<Button on:click={onShrink}><Symbol>-</Symbol></Button>
+			<Button on:click={onShiftLeft}><Symbol>↞︎</Symbol></Button>
+			<Button on:click={onShiftRight}><Symbol>↠︎</Symbol></Button>
+			<Button on:click={onShiftUp}><Symbol>↟︎</Symbol></Button>
+			<Button on:click={onShiftDown}><Symbol>↡︎</Symbol></Button>
+			<Button on:click={onNudgeLeft}><Symbol>←︎</Symbol></Button>
+			<Button on:click={onNudgeRight}><Symbol>→︎</Symbol></Button>
+			<Button on:click={onNudgeUp}><Symbol>↑︎</Symbol></Button>
+			<Button on:click={onNudgeDown}><Symbol>↓︎</Symbol></Button>
+			<Button on:click={onRotateCcw}><Symbol>↶︎</Symbol></Button>
+			<Button on:click={onRotateCw}><Symbol>↷︎</Symbol></Button>
+			<Button on:click={onFlipX}><Symbol>⬗</Symbol></Button>
+			<Button on:click={onFlipY}><Symbol>⬘</Symbol></Button>
+			<Button on:click={onDecreaseOpacity}><Symbol>👻︎</Symbol></Button>
+			<Button on:click={onDelete}><Symbol>🗑︎</Symbol></Button>
 		</div>
 	</div>
 {/if}

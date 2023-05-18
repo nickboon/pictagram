@@ -1,24 +1,13 @@
 <script>
 	import { blocks } from './unicodeBlock';
+	import SymbolEntity from './SymbolEntity.svelte';
 	import Symbol from './Symbol.svelte';
 	import Button from './Button.svelte';
+	import SymbolObject from './symbol.js';
 	import Message from './message';
 
 	export let message = new Message();
 	export let viewed;
-
-	function createSymbol(
-		text,
-		fontSize = 24,
-		x = 0,
-		y = 0,
-		scaleX = 1,
-		scaleY = 1,
-		angle = 0,
-		opacity = 1
-	) {
-		return { text, fontSize, x, y, scaleX, scaleY, angle, opacity };
-	}
 
 	function shuffle(unshuffled) {
 		return unshuffled
@@ -30,7 +19,7 @@
 	function onSymbolClick(event) {
 		message.symbols = [
 			...message.symbols,
-			createSymbol(event.target.innerText),
+			new SymbolObject(event.target.innerText),
 		];
 	}
 
@@ -38,7 +27,7 @@
 		viewed = event.target.innerText;
 	}
 
-	function onMouseleave(event) {
+	function onMouseleave() {
 		viewed = false;
 	}
 
@@ -52,7 +41,7 @@
 			on:mouseenter={onMouseenter}
 			on:mouseleave={onMouseleave}
 		>
-			<Symbol {code} />
+			<Symbol><SymbolEntity {code} /></Symbol>
 		</Button>
 	{/each}
 </div>
