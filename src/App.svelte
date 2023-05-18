@@ -117,8 +117,7 @@
 
 	.positionable_container {
 		margin: 0.5rem 0 2rem;
-		min-height: 4rem;
-		max-height: 10rem;
+		height: 10rem;
 		overflow: hidden;
 		padding: 0.5rem;
 		text-align: left;
