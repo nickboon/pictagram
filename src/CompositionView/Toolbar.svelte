@@ -2,14 +2,14 @@
 	import Tools from './Tools.svelte';
 	import Spacer from './Spacer.svelte';
 	import Selected from './Selected.svelte';
-	import Message from '../message';
+	import Message from '../Message/message';
 
 	export let message = new Message();
 	export let highlight = false;
 
 	let selected = 0;
 
-	$: messageLength = message.symbols.length;
+	$: messageLength = message.body.length;
 </script>
 
 {#if messageLength > 0}

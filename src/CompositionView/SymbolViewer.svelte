@@ -1,10 +1,10 @@
 <script>
-	import { blocks } from '../Util/unicodeBlock';
+	import { blocks } from './unicodeBlock';
 	import SymbolEntity from './SymbolEntity.svelte';
-	import Symbol from '../Symbol.svelte';
+	import Symbol from '../Message/Symbol.svelte';
 	import Button from '../Util/Button.svelte';
-	import SymbolObject from '../symbol.js';
-	import Message from '../message';
+	import SymbolObject from '../Message/symbol.js';
+	import Message from '../Message/message';
 
 	export let message = new Message();
 	export let viewed;
@@ -17,10 +17,7 @@
 	}
 
 	function onSymbolClick(event) {
-		message.symbols = [
-			...message.symbols,
-			new SymbolObject(event.target.innerText),
-		];
+		message.body = [...message.body, new SymbolObject(event.target.innerText)];
 	}
 
 	function onMouseenter(event) {

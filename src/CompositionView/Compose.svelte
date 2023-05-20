@@ -1,21 +1,21 @@
 <script>
 	import SymbolViewer from './SymbolViewer.svelte';
 	import Toolbar from './Toolbar.svelte';
-	import Message from '../Message.svelte';
+	import MessageBody from '../Message/MessageBody.svelte';
 	import Button from '../Util/Button.svelte';
 	import Highlight from '../Util/Highlight.svelte';
-	import MessageObject from '../message';
+	import Message from '../Message/message';
 
-	export let viewed;
+	export let viewed = false;
 	export let messenger;
 
-	let message = new MessageObject();
+	let message = new Message();
 	let highlight = false;
 	$: isSubmitDisabled = message.isEmpty;
 
 	function reset() {
 		isSubmitDisabled = false;
-		message.symbols.length = 0;
+		message.body.length = 0;
 	}
 
 	function onMessageSent(error) {
@@ -35,7 +35,7 @@
 {#if !message.isEmpty}
 	<div>
 		<Highlight {highlight} selector={'.symbol'}>
-			<Message {message} />
+			<MessageBody {message} />
 		</Highlight>
 	</div>
 {/if}

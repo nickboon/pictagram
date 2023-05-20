@@ -1,5 +1,5 @@
 <script>
-	import Symbol from '../Symbol.svelte';
+	import Symbol from '../Message/Symbol.svelte';
 	import Button from '../Util/Button.svelte';
 
 	export let message;
@@ -8,8 +8,8 @@
 
 	function setSelected(index) {
 		selected = index;
-		message.symbols.map((symbol) => (symbol.isSelected = false));
-		message.symbols[index].isSelected = true;
+		message.body.map((symbol) => (symbol.isSelected = false));
+		message.body[index].isSelected = true;
 	}
 
 	function onMouseenter(index) {
@@ -23,11 +23,11 @@
 	function onChange(messageLength) {
 		if (messageLength) setSelected(messageLength - 1);
 	}
-	$: onChange(message.symbols.length);
+	$: onChange(message.body.length);
 </script>
 
 <ul>
-	{#each message.symbols as symbol, index}
+	{#each message.body as symbol, index}
 		<li>
 			<Button
 				selected={symbol.isSelected}

@@ -9,14 +9,14 @@
 	}
 </script>
 
-<article>
-	{#each message.symbols as symbol}
+<div>
+	{#each message.body as symbol}
 		<Symbol style={style(symbol)}>{symbol.text}</Symbol>
 	{/each}
-</article>
+</div>
 
 <style>
-	article {
+	div {
 		height: 10rem;
 		margin: 0.5rem 0 2rem;
 		overflow: hidden;

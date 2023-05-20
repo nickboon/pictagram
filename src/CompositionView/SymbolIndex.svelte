@@ -1,6 +1,7 @@
 <script>
 	import { blocks } from './unicodeBlock';
-	import Symbol from './Symbol.svelte';
+	import Symbol from '../Message/Symbol.svelte';
+	import SymbolEntity from './SymbolEntity.svelte';
 </script>
 
 <ul>
@@ -8,7 +9,9 @@
 		<h3>{block.name}</h3>
 		<div>
 			{#each block.codes as code}
-				<Symbol {code} />
+				<Symbol>
+					<SymbolEntity {code} />
+				</Symbol>
 			{/each}
 		</div>
 	{/each}

@@ -1,5 +1,6 @@
 <script>
-	import Message from '../Message.svelte';
+	import MessageHeader from '../Message/MessageHeader.svelte';
+	import MessageBody from '../Message/MessageBody.svelte';
 
 	export let messages = [];
 </script>
@@ -7,8 +8,10 @@
 <ul>
 	{#each messages as message}
 		<li>
-			<time>{message.date.toString().slice(0, 24)}</time>
-			<Message {message} />
+			<article>
+				<MessageHeader {message} />
+				<MessageBody {message} />
+			</article>
 		</li>
 	{/each}
 </ul>
@@ -24,10 +27,5 @@
 
 	li {
 		margin-top: 1rem;
-	}
-
-	time {
-		font-family: monospace;
-		font-size: xx-small;
 	}
 </style>

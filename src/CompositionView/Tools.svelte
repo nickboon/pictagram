@@ -1,5 +1,5 @@
 <script>
-	import Symbol from '../Symbol.svelte';
+	import Symbol from '../Message/Symbol.svelte';
 	import Button from '../Util/Button.svelte';
 
 	export let message;
@@ -8,71 +8,71 @@
 	const shiftPx = 10;
 
 	function onDelete() {
-		message.symbols = message.symbols.filter(
-			(symbol) => symbol != message.symbols[selectedIndex]
+		message.body = message.body.filter(
+			(symbol) => symbol != message.body[selectedIndex]
 		);
 	}
 
 	function onGrow() {
-		message.symbols[selectedIndex].fontSize++;
+		message.body[selectedIndex].fontSize++;
 	}
 
 	function onShrink() {
-		message.symbols[selectedIndex].fontSize--;
+		message.body[selectedIndex].fontSize--;
 	}
 
 	function onNudgeLeft() {
-		message.symbols[selectedIndex].x--;
+		message.body[selectedIndex].x--;
 	}
 
 	function onNudgeRight() {
-		message.symbols[selectedIndex].x++;
+		message.body[selectedIndex].x++;
 	}
 
 	function onNudgeUp() {
-		message.symbols[selectedIndex].y--;
+		message.body[selectedIndex].y--;
 	}
 
 	function onNudgeDown() {
-		message.symbols[selectedIndex].y++;
+		message.body[selectedIndex].y++;
 	}
 
 	function onShiftLeft() {
-		message.symbols[selectedIndex].x -= shiftPx;
+		message.body[selectedIndex].x -= shiftPx;
 	}
 
 	function onShiftRight() {
-		message.symbols[selectedIndex].x += shiftPx;
+		message.body[selectedIndex].x += shiftPx;
 	}
 
 	function onShiftUp() {
-		message.symbols[selectedIndex].y -= shiftPx;
+		message.body[selectedIndex].y -= shiftPx;
 	}
 
 	function onShiftDown() {
-		message.symbols[selectedIndex].y += shiftPx;
+		message.body[selectedIndex].y += shiftPx;
 	}
 
 	function onRotateCw() {
-		message.symbols[selectedIndex].angle++;
+		message.body[selectedIndex].angle++;
 	}
 	function onRotateCcw() {
-		message.symbols[selectedIndex].angle--;
+		message.body[selectedIndex].angle--;
 	}
 
 	function onFlipX() {
-		message.symbols[selectedIndex].scaleX *= -1;
+		message.body[selectedIndex].scaleX *= -1;
 	}
 
 	function onFlipY() {
-		message.symbols[selectedIndex].scaleY *= -1;
+		message.body[selectedIndex].scaleY *= -1;
 	}
 
 	function onDecreaseOpacity() {
-		message.symbols[selectedIndex].opacity =
-			message.symbols[selectedIndex].opacity <= 0.2
+		message.body[selectedIndex].opacity =
+			message.body[selectedIndex].opacity <= 0.2
 				? 1
-				: message.symbols[selectedIndex].opacity - 0.1;
+				: message.body[selectedIndex].opacity - 0.1;
 	}
 </script>
 
