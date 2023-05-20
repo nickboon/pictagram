@@ -3,13 +3,14 @@
 	import Toolbar from './Toolbar.svelte';
 	import Message from './Message.svelte';
 	import Button from './Button.svelte';
+	import OutlineSelected from './OutlineSelected.svelte';
 	import MessageObject from './message';
 
 	export let viewed;
 	export let messenger;
 
 	let message = new MessageObject();
-	let group = false;
+	let selected = false;
 	$: isSubmitDisabled = message.isEmpty;
 
 	function reset() {
@@ -30,10 +31,12 @@
 </script>
 
 <SymbolViewer bind:message bind:viewed />
-<Toolbar bind:message bind:group />
+<Toolbar bind:message bind:selected />
 {#if !message.isEmpty}
 	<div>
-		<Message {message} bind:group />
+		<OutlineSelected {selected} selector={'.symbol'}>
+			<Message {message} />
+		</OutlineSelected>
 	</div>
 {/if}
 <form on:submit|preventDefault={onSubmit}>

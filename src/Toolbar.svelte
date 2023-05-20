@@ -4,7 +4,7 @@
 	import Message from './message';
 
 	export let message = new Message();
-	export let group = false;
+	export let selected = false;
 
 	const shiftPx = 10;
 
@@ -85,11 +85,11 @@
 	}
 
 	function onMouseenter(index) {
-		group = index;
+		selected = index;
 	}
 
 	function onMouseleave() {
-		group = false;
+		selected = false;
 	}
 
 	function onChange(messageLength) {

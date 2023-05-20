@@ -3,11 +3,6 @@
 	import Message from './message';
 
 	export let message = new Message();
-	export let group = false;
-
-	$: grouped = function (index) {
-		return group === index ? 'grouped' : '';
-	};
 
 	function style(symbol) {
 		return `font-size:${symbol.fontSize}px;opacity:${symbol.opacity};transform: translate(${symbol.x}pt, ${symbol.y}pt) rotate(${symbol.angle}deg) scaleX(${symbol.scaleX}) scaleY(${symbol.scaleY});`;
@@ -15,10 +10,8 @@
 </script>
 
 <article>
-	{#each message.symbols as symbol, index}
-		<Symbol style={style(symbol)}>
-			<span class={grouped(index)}>{symbol.text}</span>
-		</Symbol>
+	{#each message.symbols as symbol}
+		<Symbol style={style(symbol)}>{symbol.text}</Symbol>
 	{/each}
 </article>
 
@@ -29,9 +22,5 @@
 		overflow: hidden;
 		padding: 0.5rem;
 		text-align: left;
-	}
-
-	.grouped {
-		outline: 1px solid #555;
 	}
 </style>
