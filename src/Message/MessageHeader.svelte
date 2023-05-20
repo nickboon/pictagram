@@ -3,7 +3,9 @@
 </script>
 
 <header>
-	<time>{message.date.toString().slice(0, 24)}</time>
+	<time datetime={message.date}>
+		{new Date(message.date).toString().slice(0, 24)}
+	</time>
 	<address>{message.authors.join(' ')}</address>
 </header>
 

@@ -2,7 +2,6 @@ export default class Message {
 	constructor(authors = ['anon'], body = []) {
 		this.authors = authors;
 		this.body = body;
-		this.date = Date();
 	}
 
 	get isEmpty() {

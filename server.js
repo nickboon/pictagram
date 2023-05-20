@@ -6,19 +6,24 @@ import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import MessageStore from './messageStore.js';
+import messageEvents from './messageEvents.js';
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-const messageStore = new MessageStore();
 
 io.on('connection', (socket) => {
-	socket.on('messageSent', (messageText, callback) => {
-		io.emit('messageSent', messageText);
+	const onMessagesFetched = (messages) =>
+		socket.emit(messageEvents.update, messages);
+	const messageStore = new MessageStore(onMessagesFetched);
+
+	socket.on(messageEvents.messageSent, (messageText, callback) => {
+		io.emit(messageEvents.messageSent, messageText);
 		messageStore.add(messageText);
 		callback();
 	});
-	socket.emit('update', messageStore.fetch());
+
+	messageStore.fetch();
 });
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));

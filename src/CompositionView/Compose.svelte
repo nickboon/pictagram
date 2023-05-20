@@ -10,7 +10,7 @@
 	export let author;
 	export let viewed = false;
 
-	let message = new Message([author]);
+	let message = new Message([author || 'anon']);
 	let highlight = false;
 	$: isSubmitDisabled = message.isEmpty;
 
@@ -20,21 +20,20 @@
 	}
 
 	function onMessageSent(error) {
-		reset();
 		if (error) return console.log(error);
 	}
 
 	function onSubmit() {
-		isSubmitDisabled = true;
 		message.date = Date();
 		messenger.sendMessage(message, onMessageSent);
+		reset();
 	}
 </script>
 
 <SymbolViewer bind:message bind:viewed />
 <Toolbar bind:message bind:highlight />
 {#if !message.isEmpty}
-	<div>
+	<div id="composition">
 		<Highlight {highlight} selector={'.symbol'}>
 			<MessageBody {message} />
 		</Highlight>
@@ -52,6 +51,7 @@
 	}
 
 	div {
+		background-color: white;
 		outline: 1px solid #555;
 		margin-bottom: 0.5rem;
 	}
