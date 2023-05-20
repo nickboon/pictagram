@@ -1,7 +1,7 @@
 <script>
 	import Banner from './Banner.svelte';
-	import WriteMessage from './WriteMessage.svelte';
-	import ReadMessages from './ReadMessages.svelte';
+	import CopositionView from './CompositionView/Compose.svelte';
+	import MessagesView from './MessagesView/Messages.svelte';
 	import MessageService from './messageService';
 
 	let viewed = false;
@@ -20,8 +20,8 @@
 
 <main>
 	<Banner bind:viewed />
-	<WriteMessage {messenger} bind:viewed />
-	<ReadMessages {messages} />
+	<CopositionView {messenger} bind:viewed />
+	<MessagesView {messages} />
 </main>
 
 <style>

@@ -1,5 +1,5 @@
 <script>
-	import Message from './Message.svelte';
+	import Message from '../Message.svelte';
 
 	export let messages = [];
 </script>

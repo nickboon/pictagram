@@ -1,10 +1,10 @@
 <script>
-	import { blocks } from './unicodeBlock';
+	import { blocks } from '../Util/unicodeBlock';
 	import SymbolEntity from './SymbolEntity.svelte';
-	import Symbol from './Symbol.svelte';
-	import Button from './Button.svelte';
-	import SymbolObject from './symbol.js';
-	import Message from './message';
+	import Symbol from '../Symbol.svelte';
+	import Button from '../Util/Button.svelte';
+	import SymbolObject from '../symbol.js';
+	import Message from '../message';
 
 	export let message = new Message();
 	export let viewed;
