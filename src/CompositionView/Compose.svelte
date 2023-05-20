@@ -6,10 +6,11 @@
 	import Highlight from '../Util/Highlight.svelte';
 	import Message from '../Message/message';
 
-	export let viewed = false;
 	export let messenger;
+	export let author;
+	export let viewed = false;
 
-	let message = new Message();
+	let message = new Message([author]);
 	let highlight = false;
 	$: isSubmitDisabled = message.isEmpty;
 

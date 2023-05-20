@@ -1,12 +1,14 @@
 <script>
 	import Banner from './Banner.svelte';
-	import CopositionView from './CompositionView/Compose.svelte';
+	import SignIn from './SignInView/SignIn.svelte';
+	import CompositionView from './CompositionView/Compose.svelte';
 	import MessagesView from './MessagesView/Messages.svelte';
 	import MessageService from './messageService';
 
 	let viewed = false;
-
+	let author = false;
 	let messages = [];
+
 	const messenger = new MessageService(onMessageReceived, onUpdate);
 
 	function onUpdate(update) {
@@ -20,8 +22,12 @@
 
 <main>
 	<Banner bind:viewed />
-	<CopositionView {messenger} bind:viewed />
-	<MessagesView {messages} />
+	{#if author === false}
+		<SignIn bind:author />
+	{:else}
+		<CompositionView {messenger} {author} bind:viewed />
+		<MessagesView {messages} />
+	{/if}
 </main>
 
 <style>

@@ -1,5 +1,6 @@
 export default class Message {
-	constructor(body = []) {
+	constructor(authors = ['anon'], body = []) {
+		this.authors = authors;
 		this.body = body;
 		this.date = Date();
 	}
