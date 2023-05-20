@@ -1,42 +1,48 @@
 @font-face {
 	/* prettier-ignore */
 	font-family:'Dejavu Sans';
-	src: url('fonts/dejavu-2.33/ttf/DejaVuSans.ttf');
+	/* prettier-ignore */
+	src:url('fonts/dejavu-2.33/ttf/DejaVuSans.ttf');
 	font-display: block;
 }
 
 @font-face {
 	/* prettier-ignore */
 	font-family:'Free Sans';
-	src: url('fonts/freefont-20100919-ttf/FreeSans.ttf');
+	/* prettier-ignore */
+	src:url('fonts/freefont-20100919-ttf/FreeSans.ttf');
 	font-display: block;
 }
 
 @font-face {
 	/* prettier-ignore */
 	font-family:'Free Serif';
-	src: url('fonts/freefont-20100919-ttf/FreeSerif.ttf');
+	/* prettier-ignore */
+	src:url('fonts/freefont-20100919-ttf/FreeSerif.ttf');
 	font-display: block;
 }
 
 @font-face {
 	/* prettier-ignore */
 	font-family:'Symbola';
-	src: url('fonts/symbola-6.05/Symbola605.ttf');
+	/* prettier-ignore */
+	src:url('fonts/symbola-6.05/Symbola605.ttf');
 	font-display: block;
 }
 
 @font-face {
 	/* prettier-ignore */
 	font-family:'Noto Emoji';
-	src: url('fonts/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf');
+	/* prettier-ignore */
+	src:url('fonts/Noto_Emoji/NotoEmoji-VariableFont_wght.ttf');
 	font-display: block;
 }
 
 @font-face {
 	/* prettier-ignore */
 	font-family:'Noto Symbols 2';
-	src: url('fonts/Noto_Sans_Symbols_2/NotoSansSymbols2-Regular.ttf');
+	/* prettier-ignore */
+	src:url('fonts/Noto_Sans_Symbols_2/NotoSansSymbols2-Regular.ttf');
 	font-display: block;
 }
 
