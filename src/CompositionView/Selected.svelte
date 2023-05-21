@@ -10,6 +10,10 @@
 		selected = index;
 		message.body.map((symbol) => (symbol.isSelected = false));
 		message.body[index].isSelected = true;
+
+		console.log('selected', selected);
+		console.log('message', message.body);
+		console.log('message.body[index]', message.body[index]);
 	}
 
 	function onMouseenter(index) {
@@ -23,7 +27,8 @@
 	function onChange(messageLength) {
 		if (messageLength) setSelected(messageLength - 1);
 	}
-	$: onChange(message.body.length);
+	$: messageLength = message.body.length;
+	$: onChange(messageLength);
 </script>
 
 <ul>
@@ -32,6 +37,7 @@
 			<Button
 				selected={symbol.isSelected}
 				on:click={() => {
+					console.log('click');
 					setSelected(index);
 				}}
 				on:mouseenter={() => {
