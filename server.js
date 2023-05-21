@@ -5,13 +5,15 @@ import helmet from 'helmet';
 import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Db from './db.js';
 import MessageStore from './messageStore.js';
 import messageEvents from './messageEvents.js';
+
+new Db().connect();
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-
 io.on('connection', (socket) => {
 	const onMessagesFetched = (messages) =>
 		socket.emit(messageEvents.update, messages);

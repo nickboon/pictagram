@@ -1,10 +1,5 @@
 import mongoose from 'mongoose';
 
-mongoose
-	.connect('mongodb://localhost:27017/messages')
-	.then(() => console.log('Connected to DB'))
-	.catch((err) => console.error('Could not connect to db', err));
-
 const messageSchema = new mongoose.Schema({
 	authors: {
 		type: [String],
