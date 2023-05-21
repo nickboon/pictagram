@@ -7,6 +7,7 @@
 
 	let viewed = false;
 	let author = false;
+	let isAbsolutePositioning = true;
 	let messages = [];
 
 	const messenger = new MessageService(onMessageReceived, onUpdate);
@@ -23,9 +24,9 @@
 <main>
 	<Banner bind:viewed />
 	{#if author === false}
-		<SignIn bind:author />
+		<SignIn bind:author bind:isAbsolutePositioning />
 	{:else}
-		<CompositionView {messenger} {author} bind:viewed />
+		<CompositionView {messenger} {author} {isAbsolutePositioning} bind:viewed />
 		<MessagesView {messages} />
 	{/if}
 </main>

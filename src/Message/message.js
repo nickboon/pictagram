@@ -1,6 +1,7 @@
 export default class Message {
-	constructor(authors = ['anon'], body = []) {
+	constructor(authors = ['anon'], symbolPositions = 'absolute', body = []) {
 		this.authors = authors;
+		this.symbolPositions = symbolPositions;
 		this.body = body;
 	}
 

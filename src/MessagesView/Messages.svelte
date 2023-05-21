@@ -18,11 +18,11 @@
 
 <style>
 	ul {
+		border-top: 1px solid #555;
 		list-style-type: none;
 		margin-top: 1.5rem;
-		border-top: 1px solid #555;
-		text-align: left;
 		padding: 1rem 0;
+		text-align: left;
 	}
 
 	li {

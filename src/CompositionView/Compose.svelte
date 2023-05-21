@@ -9,9 +9,12 @@
 	export let messenger;
 	export let author;
 	export let viewed = false;
+	export let isAbsolutePositioning = true;
 
-	let message = new Message([author || 'anon']);
 	let highlight = false;
+
+	const symbolPositions = isAbsolutePositioning ? 'absolute' : 'relative';
+	let message = new Message([author || 'anon'], symbolPositions);
 	$: isSubmitDisabled = message.isEmpty;
 
 	function reset() {

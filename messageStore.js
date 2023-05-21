@@ -24,6 +24,7 @@ const messageSchema = new mongoose.Schema({
 		},
 	],
 	date: { type: Date, default: Date() },
+	symbolPositions: { type: String, default: 'relative' },
 });
 
 const Message = mongoose.model('Message', messageSchema);
