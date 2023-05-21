@@ -1,12 +1,13 @@
 {
 	"name": "pictagram",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Unicode symbol only messaging service",
 	"type": "module",
 	"scripts": {
 		"build": "rollup -c",
 		"dev": "rollup -c -w",
-		"start": "node server.js"
+		"start": "node server.js",
+		"production": "git push heroku master"
 	},
 	"engines": {
 		"node": "16.16.0"
