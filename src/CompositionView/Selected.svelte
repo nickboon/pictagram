@@ -10,10 +10,6 @@
 		selected = index;
 		message.body.map((symbol) => (symbol.isSelected = false));
 		message.body[index].isSelected = true;
-
-		console.log('selected', selected);
-		console.log('message', message.body);
-		console.log('message.body[index]', message.body[index]);
 	}
 
 	function onMouseenter(index) {

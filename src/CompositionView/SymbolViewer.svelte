@@ -9,11 +9,22 @@
 	export let message = new Message();
 	export let viewed;
 
+	const sortedCodes = blocks.map((block) => block.codes).flat();
+	let codes;
+
 	function shuffle(unshuffled) {
 		return unshuffled
 			.map((value) => ({ value, sort: Math.random() }))
 			.sort((a, b) => a.sort - b.sort)
 			.map(({ value }) => value);
+	}
+
+	function shuffleCodes() {
+		codes = shuffle(sortedCodes);
+	}
+
+	function sortCodes() {
+		codes = sortedCodes;
 	}
 
 	function onSymbolClick(event) {
@@ -28,24 +39,35 @@
 		viewed = false;
 	}
 
-	const codes = shuffle(blocks.map((block) => block.codes).flat());
+	shuffleCodes();
 </script>
 
-<div>
-	{#each codes as code}
-		<Button
-			on:click={onSymbolClick}
-			on:mouseenter={onMouseenter}
-			on:mouseleave={onMouseleave}
-		>
-			<Symbol><SymbolEntity {code} /></Symbol>
-		</Button>
-	{/each}
-</div>
+<section>
+	<div class="order">
+		<Button on:click={shuffleCodes}><Symbol>🔀︎</Symbol></Button>
+		<Button on:click={sortCodes}><Symbol>⇅︎</Symbol></Button>
+	</div>
+	<div class="index">
+		{#each codes as code}
+			<Button
+				on:click={onSymbolClick}
+				on:mouseenter={onMouseenter}
+				on:mouseleave={onMouseleave}
+			>
+				<Symbol><SymbolEntity {code} /></Symbol>
+			</Button>
+		{/each}
+	</div>
+</section>
 
 <style>
-	div {
+	section {
 		margin: 2rem 0;
+	}
+	.order {
+		margin-bottom: 1rem;
+	}
+	.index {
 		max-height: 8rem;
 		overflow-y: scroll;
 		scrollbar-color: transparent;
