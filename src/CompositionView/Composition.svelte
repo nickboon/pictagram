@@ -1,4 +1,5 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import SymbolViewer from './SymbolViewer.svelte';
 	import Toolbar from './Toolbar.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
@@ -11,15 +12,15 @@
 	export let viewed = false;
 	export let isAbsolutePositioning = true;
 
-	let highlight = false;
-
+	const dispatch = createEventDispatcher();
 	const symbolPositions = isAbsolutePositioning ? 'absolute' : 'relative';
+
+	let highlight = false;
 	let message = new Message([author || 'anon'], symbolPositions);
 	$: isSubmitDisabled = message.isEmpty;
 
 	function reset() {
-		isSubmitDisabled = false;
-		message.body.length = 0;
+		message.empty();
 	}
 
 	function onMessageSent(error) {
@@ -27,9 +28,11 @@
 	}
 
 	function onSubmit() {
+		isSubmitDisabled = true;
 		message.date = Date();
 		messenger.sendMessage(message, onMessageSent);
 		reset();
+		dispatch('submit');
 	}
 </script>
 
@@ -50,7 +53,10 @@
 
 <style>
 	form {
-		margin: 0.5rem 0 3rem;
+		border-bottom: 1px solid #555;
+		margin: 0.5rem 0 1rem;
+		padding-bottom: 3rem;
+		text-align: center;
 	}
 
 	div {

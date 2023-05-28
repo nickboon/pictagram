@@ -1,16 +1,15 @@
 <script>
 	import Banner from './Banner.svelte';
 	import SignIn from './SignInView/SignIn.svelte';
-	import CompositionView from './CompositionView/Compose.svelte';
-	import MessagesView from './MessagesView/Messages.svelte';
+	import Composition from './CompositionView/Composition.svelte';
+	import Messages from './MessagesView/Messages.svelte';
 	import MessageService from './messageService';
 
 	let viewed = false;
 	let author = false;
 	let isAbsolutePositioning = true;
 	let messages = [];
-
-	const messenger = new MessageService(onMessageReceived, onUpdate);
+	let messenger = new MessageService(onMessageReceived, onUpdate);
 
 	function onUpdate(update) {
 		messages = update;
@@ -26,8 +25,8 @@
 	{#if author === false}
 		<SignIn bind:author bind:isAbsolutePositioning />
 	{:else}
-		<CompositionView {messenger} {author} {isAbsolutePositioning} bind:viewed />
-		<MessagesView {messages} />
+		<Composition {messenger} {author} {isAbsolutePositioning} bind:viewed />
+		<Messages {messenger} {author} {isAbsolutePositioning} {messages} />
 	{/if}
 </main>
 

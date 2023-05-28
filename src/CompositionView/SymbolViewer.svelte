@@ -63,10 +63,18 @@
 <style>
 	section {
 		margin: 2rem 0;
+		text-align: center;
 	}
+
 	.order {
+		visibility: hidden;
 		margin-bottom: 1rem;
 	}
+
+	section:hover .order {
+		visibility: visible;
+	}
+
 	.index {
 		max-height: 8rem;
 		overflow-y: scroll;

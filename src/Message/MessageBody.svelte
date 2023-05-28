@@ -1,6 +1,5 @@
 <script>
 	import Symbol from './Symbol.svelte';
-	import Message from './message';
 
 	export let message = new Message();
 
@@ -18,9 +17,8 @@
 <style>
 	div {
 		height: 10rem;
-		margin: 0.5rem 0 2rem;
 		overflow: hidden;
-		padding: 0.5rem;
+		padding: 1rem 0.5rem 0.5rem;
 		position: relative;
 		text-align: left;
 	}

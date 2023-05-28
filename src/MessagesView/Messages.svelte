@@ -1,31 +1,25 @@
 <script>
-	import MessageHeader from '../Message/MessageHeader.svelte';
-	import MessageBody from '../Message/MessageBody.svelte';
+	import Message from './Message.svelte';
 
+	export let messenger;
+	export let author;
+	export let isAbsolutePositioning = true;
 	export let messages = [];
 </script>
 
 <ul>
 	{#each messages as message}
 		<li>
-			<article>
-				<MessageHeader {message} />
-				<MessageBody {message} />
-			</article>
+			<Message {message} {author} {isAbsolutePositioning} {messenger} />
 		</li>
 	{/each}
 </ul>
 
 <style>
 	ul {
-		border-top: 1px solid #555;
+		margin: 0;
 		list-style-type: none;
-		margin-top: 1.5rem;
-		padding: 1rem 0;
+		padding: 0;
 		text-align: left;
-	}
-
-	li {
-		margin-top: 1rem;
 	}
 </style>
