@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from 'config';
 
-export default class Db {
+class Db {
 	connect() {
 		const connectionString = config.get('db');
 		mongoose
@@ -11,4 +11,8 @@ export default class Db {
 				console.error('Could not connect to db', connectionString, err)
 			);
 	}
+}
+
+export default function () {
+	new Db().connect();
 }

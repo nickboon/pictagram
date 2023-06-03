@@ -1,37 +1,24 @@
 import { Server } from 'socket.io';
 import express from 'express';
 import { createServer } from 'http';
-import helmet from 'helmet';
-import compression from 'compression';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import Db from './db.js';
 import MessageStore from './messageStore.js';
-import messageEvents from './messageEvents.js';
+import startupDb from './startup/db.js';
+import startupIo from './startup/io.js';
+import startupRoutes from './startup/routes.js';
+import startupProduction from './startup/production.js';
+import startupStatic from './startup/static.js';
 
-new Db().connect();
-
+const messageStore = new MessageStore();
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-io.on('connection', (socket) => {
-	const onMessagesFetched = (messages) =>
-		socket.emit(messageEvents.update, messages);
-	const messageStore = new MessageStore(onMessagesFetched);
 
-	socket.on(messageEvents.messageSent, (messageText, callback) => {
-		io.emit(messageEvents.messageSent, messageText);
-		messageStore.add(messageText);
-		callback();
-	});
+startupDb();
+startupIo(io, messageStore);
+startupStatic(app);
+startupRoutes(app, messageStore);
 
-	messageStore.fetch();
-});
-
-const currentDir = path.dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.join(currentDir, 'public')));
-app.use(helmet());
-app.use(compression());
+startupProduction(app);
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log(`Listening on port ${port}...`));

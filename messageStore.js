@@ -1,14 +1,16 @@
 import mongoose from 'mongoose';
+import Message from './src/Message/message.js';
 
 const messageSchema = new mongoose.Schema({
 	authors: {
 		type: [String],
-		default: ['anon'],
+		default: Message.default.authors,
 	},
 	body: [
 		{
 			text: {
 				type: String,
+				trim: true,
 				validate: (text) => {
 					/^[←-🫶]{1}$/.test(text);
 				},
@@ -16,31 +18,33 @@ const messageSchema = new mongoose.Schema({
 			fontSize: Number,
 			x: Number,
 			y: Number,
+			offsetLeft: Number,
+			offsetTop: Number,
 			scaleX: Number,
 			scaleY: Number,
 			angle: Number,
 			opacity: Number,
-			isSelected: Boolean,
 		},
 	],
 	date: { type: Date, default: Date() },
-	symbolPositions: { type: String, default: 'relative' },
+	symbolPositions: {
+		type: String,
+		default: Message.default.symbolPositions,
+	},
 });
 
-const Message = mongoose.model('Message', messageSchema);
+const Model = mongoose.model('Message', messageSchema);
 
 export default class MessageStore {
-	constructor(onFetch = () => {}) {
-		this.onFetch = onFetch;
+	fetch() {
+		return Model.find().sort({ _id: -1 });
 	}
 
-	async fetch() {
-		const messages = await Message.find().sort({ _id: -1 });
-		this.onFetch(messages);
+	getById(id) {
+		return Model.findById(id);
 	}
 
-	async add(message) {
-		const document = new Message(message);
-		await document.save();
+	add(message) {
+		new Model(message).save();
 	}
 }
