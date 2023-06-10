@@ -1,6 +1,7 @@
 <script>
 	import Terms from './Terms.svelte';
 	import Button from '../Util/Button.svelte';
+	import Symbol from '../Message/Symbol.svelte';
 
 	export let author = false;
 	export let isAbsolutePositioning = true;
@@ -25,7 +26,7 @@
 		author = format(value);
 	}
 
-	$: isValid = value.match(/^[a-zA-Z0-9_.-@ ]*$/);
+	$: isValid = value.match(/^[a-zA-Z0-9_.\-@]*$/);
 	$: isSubmitDisabled = !isTermsChecked || !isValid;
 </script>
 
@@ -40,12 +41,24 @@
 			</div>
 		</section>
 		<section>
-			<h3>Select Character positioning:</h3>
+			<h3>Select character positioning:</h3>
 			Absolute
 			<Button type="button" on:click={toggleAbsolutePositioning}>
-				<span class="symbol">{isAbsolutePositioning ? '👈︎' : '👉︎'}</span>
+				<Symbol>{isAbsolutePositioning ? '👈︎' : '👉︎'}</Symbol>
 			</Button>
 			Relative
+		</section>
+		<section>
+			<ul>
+				<li>Click on a character to start composing a new post,</li>
+				<li>
+					or reply to
+					<Symbol>↩︎</Symbol>
+					or recycle
+					<Symbol>♻︎</Symbol>
+					an existing post.
+				</li>
+			</ul>
 		</section>
 		<section>
 			<h3>
@@ -56,9 +69,9 @@
 			</h3>
 		</section>
 		<section>
-			<h3>
+			<h3 class="submit">
 				<Button type="submit" disabled={isSubmitDisabled}>
-					<span class="primary symbol">✔︎</span>
+					<Symbol>✔︎</Symbol>
 				</Button>
 			</h3>
 		</section>
@@ -77,6 +90,11 @@
 		font-size: large;
 		margin: initial;
 	}
+	ul {
+		margin: 0;
+		list-style-type: none;
+		padding: 0;
+	}
 
 	:global(button) {
 		font-size: inherit;
@@ -91,8 +109,14 @@
 		display: none;
 	}
 
-	.primary {
-		color: #ff3e00;
+	.submit :global(button) {
 		font-size: larger;
+	}
+
+	.submit :global(button):enabled {
+		color: green;
+	}
+	.submit :global(button):enabled:hover {
+		outline: 1px solid green;
 	}
 </style>

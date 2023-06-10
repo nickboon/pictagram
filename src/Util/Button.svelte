@@ -31,4 +31,8 @@
 	button:active {
 		opacity: 0.6;
 	}
+
+	button:disabled {
+		opacity: 0.3;
+	}
 </style>

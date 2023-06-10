@@ -1,5 +1,6 @@
 <script>
 	import Button from '../Util/Button.svelte';
+	import Symbol from '../Message/Symbol.svelte';
 
 	export let isOpen = true;
 
@@ -22,16 +23,20 @@
 <p>For more information contact me at boonnick at hotmail dot com.</p>
 
 <section>
-	<h3>
+	<h3 class="submit">
 		<Button type="submit" on:click={close}>
-			<span class="primary symbol">✔︎</span>
+			<Symbol>✔︎</Symbol>
 		</Button>
 	</h3>
 </section>
 
 <style>
-	.primary {
-		color: #ff3e00;
+	.submit :global(button) {
 		font-size: larger;
+		color: green;
+	}
+
+	.submit :global(button):hover {
+		outline: 1px solid green;
 	}
 </style>
