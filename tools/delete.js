@@ -6,4 +6,8 @@ startupDb();
 const args = process.argv.slice(2);
 const id = args[0];
 
-Message.findOneAndDelete({ _id: id }).then((message) => console.log(message));
+console.log(`Deleting message ${id}...`);
+Message.findOneAndDelete({ _id: id }).then((message) => {
+	console.log(message);
+	process.exit();
+});

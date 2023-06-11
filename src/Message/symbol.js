@@ -1,5 +1,5 @@
 export default class Symbol {
-	constructor(
+	constructor({
 		text,
 		fontSize = 24,
 		x = 0,
@@ -9,8 +9,8 @@ export default class Symbol {
 		scaleX = 1,
 		scaleY = 1,
 		angle = 0,
-		opacity = 1
-	) {
+		opacity = 1,
+	} = {}) {
 		this.text = text;
 		this.fontSize = fontSize;
 		this.x = x;
