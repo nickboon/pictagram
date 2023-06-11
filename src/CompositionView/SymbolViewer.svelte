@@ -28,7 +28,10 @@
 	}
 
 	function onSymbolClick(event) {
-		message.body = [...message.body, new SymbolObject(event.target.innerText)];
+		message.body = [
+			...message.body,
+			new SymbolObject({ text: event.target.innerText }),
+		];
 	}
 
 	function onMouseenter(event) {
