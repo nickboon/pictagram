@@ -44,7 +44,7 @@ const body = Array.from(symbolElements).map((element) => {
 	const angle = parseInt(
 		/(?<=rotate\()[^\)]+/.exec(style)[0].replace('deg', '')
 	);
-	const opacity = parseInt(/(?<=opacity:)[^;]+/.exec(style)[0]);
+	const opacity = parseFloat(/(?<=opacity:)[^;]+/.exec(style)[0]);
 
 	return new Symbol({
 		text,
