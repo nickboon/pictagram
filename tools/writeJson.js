@@ -7,5 +7,5 @@ export default function (js, filename) {
 
 	var json = JSON.stringify(js, null, 2);
 	fs.writeFileSync(file, json);
-	console.log(`Messages written to ${file}`);
+	console.log(`JSON written to ${file}`);
 }
