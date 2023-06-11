@@ -7,7 +7,6 @@
 
 <style>
 	h1 {
-		color: #ff3e00;
 		font-weight: 100;
 		height: 4rem;
 		text-transform: uppercase;
