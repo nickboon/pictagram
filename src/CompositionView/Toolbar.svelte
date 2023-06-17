@@ -1,6 +1,5 @@
 <script>
 	import Tools from './Tools.svelte';
-	import Spacer from './Spacer.svelte';
 	import Selected from './Selected.svelte';
 	import Message from '../Message/message';
 
@@ -13,15 +12,18 @@
 </script>
 
 {#if messageLength > 0}
-	<div>
-		<Selected bind:highlight bind:selected bind:message />
-		<Spacer />
-		<Tools selectedIndex={selected} bind:message />
-	</div>
+	<section>
+		<div>
+			<Tools selectedIndex={selected} bind:message />
+		</div>
+		<div>
+			<Selected bind:highlight bind:selected bind:message />
+		</div>
+	</section>
 {/if}
 
 <style>
-	div {
+	section {
 		margin-bottom: 1rem;
 	}
 </style>

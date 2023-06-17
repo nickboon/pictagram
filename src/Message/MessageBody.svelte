@@ -5,8 +5,18 @@
 	export let message = new Message();
 	export let symbolElements = [];
 
+	function getInvertFilter(symbol) {
+		return symbol.isInverted ? 'color:white' : '';
+	}
+
 	function style(symbol) {
-		return `position:${message.symbolPositions};font-size:${symbol.fontSize}px;opacity:${symbol.opacity};transform: translate(${symbol.x}px, ${symbol.y}px) rotate(${symbol.angle}deg) scaleX(${symbol.scaleX}) scaleY(${symbol.scaleY});`;
+		return `position:${message.symbolPositions};font-size:${
+			symbol.fontSize
+		}px;opacity:${symbol.opacity};transform: translate(${symbol.x}px,${
+			symbol.y
+		}px) rotate(${symbol.angle}deg) scaleX(${symbol.scaleX}) scaleY(${
+			symbol.scaleY
+		});${getInvertFilter(symbol)}`;
 	}
 </script>
 

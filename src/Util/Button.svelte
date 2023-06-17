@@ -4,14 +4,7 @@
 	export let disabled = false;
 </script>
 
-<button
-	{type}
-	class={selected ? 'selected' : ''}
-	on:click
-	on:mouseenter
-	on:mouseleave
-	{disabled}
->
+<button {type} class:selected on:click on:mouseenter on:mouseleave {disabled}>
 	<slot />
 </button>
 

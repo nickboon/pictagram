@@ -1,24 +1,19 @@
 <script>
+	import symbolObject from '../Message/symbol';
 	import Symbol from '../Message/Symbol.svelte';
 	import Button from '../Util/Button.svelte';
 
 	export let message;
 	export let selectedIndex;
 
-	const shiftPx = 10;
+	const shiftPx = symbolObject.default.fontSize;
+
+	let underline = false;
 
 	function onDelete() {
 		message.body = message.body.filter(
 			(symbol) => symbol != message.body[selectedIndex]
 		);
-	}
-
-	function onGrow() {
-		message.body[selectedIndex].fontSize++;
-	}
-
-	function onShrink() {
-		message.body[selectedIndex].fontSize--;
 	}
 
 	function onNudgeLeft() {
@@ -54,10 +49,22 @@
 	}
 
 	function onRotateCw() {
-		message.body[selectedIndex].angle++;
+		message.body[selectedIndex].angle += underline ? 90 : 1;
 	}
 	function onRotateCcw() {
-		message.body[selectedIndex].angle--;
+		message.body[selectedIndex].angle -= underline ? 90 : 1;
+	}
+
+	function onGrow() {
+		message.body[selectedIndex].fontSize += underline ? shiftPx : 1;
+	}
+
+	function onShrink() {
+		message.body[selectedIndex].fontSize -= underline ? shiftPx : 1;
+	}
+
+	function toggleAlt() {
+		underline = !underline;
 	}
 
 	function onFlipX() {
@@ -68,6 +75,11 @@
 		message.body[selectedIndex].scaleY *= -1;
 	}
 
+	function toggleInvert() {
+		message.body[selectedIndex].isInverted =
+			!message.body[selectedIndex].isInverted;
+	}
+
 	function onDecreaseOpacity() {
 		message.body[selectedIndex].opacity =
 			message.body[selectedIndex].opacity <= 0.2
@@ -76,8 +88,6 @@
 	}
 </script>
 
-<Button on:click={onGrow}><Symbol>+</Symbol></Button>
-<Button on:click={onShrink}><Symbol>-</Symbol></Button>
 <Button on:click={onShiftLeft}><Symbol>↞︎</Symbol></Button>
 <Button on:click={onShiftRight}><Symbol>↠︎</Symbol></Button>
 <Button on:click={onShiftUp}><Symbol>↟︎</Symbol></Button>
@@ -86,9 +96,21 @@
 <Button on:click={onNudgeRight}><Symbol>→︎</Symbol></Button>
 <Button on:click={onNudgeUp}><Symbol>↑︎</Symbol></Button>
 <Button on:click={onNudgeDown}><Symbol>↓︎</Symbol></Button>
-<Button on:click={onRotateCcw}><Symbol>↶︎</Symbol></Button>
-<Button on:click={onRotateCw}><Symbol>↷︎</Symbol></Button>
+<span class:underline>
+	<Button on:click={onRotateCcw}><Symbol>↶︎</Symbol></Button>
+	<Button on:click={onRotateCw}><Symbol>↷︎</Symbol></Button>
+	<Button on:click={onGrow}><Symbol>+</Symbol></Button>
+	<Button on:click={onShrink}><Symbol>-</Symbol></Button>
+</span>
+<Button on:click={toggleAlt}><Symbol>⌥︎</Symbol></Button>
 <Button on:click={onFlipX}><Symbol>⬗</Symbol></Button>
 <Button on:click={onFlipY}><Symbol>⬘</Symbol></Button>
+<Button on:click={toggleInvert}><Symbol>◐︎</Symbol></Button>
 <Button on:click={onDecreaseOpacity}><Symbol>👻︎</Symbol></Button>
 <Button on:click={onDelete}><Symbol>🗑︎</Symbol></Button>
+
+<style>
+	.underline :global(.symbol) {
+		text-decoration: underline;
+	}
+</style>
