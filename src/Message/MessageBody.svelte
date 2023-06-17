@@ -23,7 +23,6 @@
 		height: 11rem;
 		overflow: hidden;
 		margin: 1rem 0 0.5rem;
-		padding-left: 0.5rem;
 		position: relative;
 		text-align: left;
 	}
