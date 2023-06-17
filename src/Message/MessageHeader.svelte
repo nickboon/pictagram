@@ -5,7 +5,7 @@
 	import Symbol from '../Message/Symbol.svelte';
 
 	function formatAuthors(authors) {
-		return [...new Set(authors.reverse())].join(' ');
+		return [...new Set(authors.reverse())].join(', ');
 	}
 
 	export let message = new Message();
@@ -21,7 +21,7 @@
 				authors={formatAuthors(message.replyTo.authors)}
 			/>
 		</span>
-		<div>
+		<div class="reply-to">
 			<MessageBody message={message.replyTo} />
 		</div>
 	{/if}

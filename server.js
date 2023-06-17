@@ -3,7 +3,7 @@ import express from 'express';
 import { createServer } from 'http';
 import MessageStore from './messageStore.js';
 import startupDb from './startup/db.js';
-import startupIo from './startup/io.js';
+import startupMessaging from './startup/messaging.js';
 import startupRoutes from './startup/routes.js';
 import startupProduction from './startup/production.js';
 import startupStatic from './startup/static.js';
@@ -14,7 +14,7 @@ const server = createServer(app);
 const io = new Server(server);
 
 startupDb();
-startupIo(io, messageStore);
+startupMessaging(io, messageStore);
 startupStatic(app);
 startupRoutes(app, messageStore);
 

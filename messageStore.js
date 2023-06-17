@@ -6,6 +6,12 @@ export default class MessageStore {
 	}
 
 	add(message) {
-		new Message(message).save();
+		return new Message(message).save();
+	}
+
+	putById(id, filter) {
+		return Message.findByIdAndUpdate(id, filter).then((message) =>
+			message.save()
+		);
 	}
 }

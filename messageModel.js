@@ -47,6 +47,10 @@ const messageSchema = new mongoose.Schema({
 				type: Number,
 				default: 0,
 			},
+			isInverted: {
+				type: Boolean,
+				default: false,
+			},
 			opacity: {
 				type: Number,
 				default: 1,
@@ -61,6 +65,10 @@ const messageSchema = new mongoose.Schema({
 	isRecycled: {
 		type: Boolean,
 		default: false,
+	},
+	downloadedBy: {
+		type: [String],
+		default: [],
 	},
 });
 

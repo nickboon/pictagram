@@ -1,6 +1,6 @@
 <script>
 	import Symbol from '../Message/Symbol.svelte';
-	import Button from '../Util/Button.svelte';
+	import Button from '../Shared/Button.svelte';
 
 	export let message;
 	export let highlight;

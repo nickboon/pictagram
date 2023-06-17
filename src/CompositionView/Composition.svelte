@@ -13,8 +13,8 @@ Requirements
 	import SymbolViewer from './SymbolViewer.svelte';
 	import Toolbar from './Toolbar.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
-	import Button from '../Util/Button.svelte';
-	import Highlight from '../Util/Highlight.svelte';
+	import Button from '../Shared/Button.svelte';
+	import Highlight from '../Shared/Highlight.svelte';
 	import Message from '../Message/message';
 	import Symbol from '../Message/Symbol.svelte';
 

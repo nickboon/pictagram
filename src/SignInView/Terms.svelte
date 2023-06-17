@@ -1,5 +1,5 @@
 <script>
-	import Button from '../Util/Button.svelte';
+	import Button from '../Shared/Button.svelte';
 	import Symbol from '../Message/Symbol.svelte';
 
 	export let isOpen = true;

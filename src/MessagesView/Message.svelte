@@ -1,9 +1,9 @@
 <script>
-	import { tick } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 	import MessageHeader from '../Message/MessageHeader.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
 	import Composition from '../CompositionView/Composition.svelte';
-	import Button from '../Util/Button.svelte';
+	import Button from '../Shared/Button.svelte';
 	import Symbol from '../Message/Symbol.svelte';
 	import Message from '../Message/message.js';
 
@@ -12,9 +12,12 @@
 	export let author;
 	export let isAbsolutePositioning = true;
 
+	const dispatch = createEventDispatcher();
+
 	let symbolElements = [];
 	let isReplying = false;
 	let recycledFrom;
+	let post;
 
 	function reply() {
 		isReplying = !isReplying;
@@ -49,18 +52,29 @@
 		loadRecycledComposition();
 	}
 
+	function download() {
+		dispatch('download', message);
+	}
+
 	function onSubmit() {
 		isReplying = false;
 	}
 </script>
 
-<section>
+<section bind:this={post}>
 	<article>
 		<MessageHeader {message} />
-		<div class="options">
-			<Button on:click={reply}><Symbol>↩︎</Symbol></Button>
-			<Button on:click={recycle}><Symbol>♻︎</Symbol></Button>
-		</div>
+		<ul class="options">
+			<li>
+				<Button on:click={reply}><Symbol>↩︎</Symbol></Button>
+			</li>
+			<li>
+				<Button on:click={recycle}><Symbol>♻︎</Symbol></Button>
+			</li>
+			<li>
+				<Button on:click={download}><Symbol>📸︎</Symbol></Button>
+			</li>
+		</ul>
 		<MessageBody {message} bind:symbolElements />
 	</article>
 	{#if isReplying}
@@ -76,9 +90,19 @@
 </section>
 
 <style>
+	ul {
+		background-color: white;
+		list-style-type: none;
+		padding: 0;
+	}
 	section {
 		padding-top: 1rem;
 		position: relative;
+		background-color: white;
+	}
+
+	li {
+		margin-bottom: 0.5rem;
 	}
 
 	.options {

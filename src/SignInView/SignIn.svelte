@@ -1,6 +1,6 @@
 <script>
 	import Terms from './Terms.svelte';
-	import Button from '../Util/Button.svelte';
+	import Button from '../Shared/Button.svelte';
 	import Symbol from '../Message/Symbol.svelte';
 
 	export let author = false;

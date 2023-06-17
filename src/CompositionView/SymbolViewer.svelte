@@ -2,7 +2,7 @@
 	import { blocks } from './unicodeBlock';
 	import SymbolEntity from './SymbolEntity.svelte';
 	import Symbol from '../Message/Symbol.svelte';
-	import Button from '../Util/Button.svelte';
+	import Button from '../Shared/Button.svelte';
 	import SymbolObject from '../Message/symbol.js';
 	import Message from '../Message/message';
 

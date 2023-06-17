@@ -1,0 +1,60 @@
+<script>
+	import { onMount } from 'svelte';
+	import domtoimage from 'dom-to-image';
+	import MessageHeader from '../Message/MessageHeader.svelte';
+	import MessageBody from '../Message/MessageBody.svelte';
+	import Symbol from '../Message/Symbol.svelte';
+
+	export let message;
+
+	let section;
+
+	onMount(() => {
+		section.querySelector('.reply-to')?.remove();
+
+		domtoimage.toPng(section).then((dataUrl) => {
+			const link = document.createElement('a');
+			link.download = `${message._id}.png`;
+			link.href = dataUrl;
+			link.click();
+			message = false;
+		});
+	});
+</script>
+
+<div>
+	<h2>
+		<Symbol>📸︎</Symbol>
+	</h2>
+	<section bind:this={section}>
+		<article>
+			<MessageHeader {message} />
+			<MessageBody {message} />
+		</article>
+	</section>
+</div>
+
+<style>
+	div,
+	section {
+		background-color: white;
+	}
+
+	div {
+		text-align: center;
+	}
+
+	section {
+		padding: 1rem;
+	}
+
+	h2 {
+		animation: blinker 1s linear infinite;
+	}
+
+	@keyframes blinker {
+		50% {
+			opacity: 0;
+		}
+	}
+</style>

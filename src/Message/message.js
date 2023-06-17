@@ -24,6 +24,7 @@ export default class Message {
 		this.symbolPositions = symbolPositions;
 		this.body = body;
 		this.isRecycled = isRecycled;
+		this.downloadedBy = [];
 	}
 
 	get isEmpty() {

@@ -1,6 +1,4 @@
 <script>
-	import Message from './message';
-
 	export let date;
 	export let authors;
 </script>
