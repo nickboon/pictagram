@@ -41,20 +41,29 @@
 	}
 
 	div {
-		text-align: center;
+		max-width: 240px;
 	}
 
 	section {
 		padding: 1rem;
+		text-align: left;
 	}
 
 	h2 {
 		animation: blinker 1s linear infinite;
+		text-align: center;
 	}
 
 	@keyframes blinker {
 		50% {
 			opacity: 0;
+		}
+	}
+
+	@media (min-width: 640px) {
+		div {
+			max-width: 50%;
+			width: 50%;
 		}
 	}
 </style>
