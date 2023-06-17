@@ -7,6 +7,7 @@
 	export let selectedIndex;
 
 	const shiftPx = symbolObject.default.fontSize;
+	const altShiftPx = shiftPx * 5;
 
 	let underline = false;
 
@@ -33,19 +34,19 @@
 	}
 
 	function onShiftLeft() {
-		message.body[selectedIndex].x -= shiftPx;
+		message.body[selectedIndex].x -= underline ? altShiftPx : shiftPx;
 	}
 
 	function onShiftRight() {
-		message.body[selectedIndex].x += shiftPx;
+		message.body[selectedIndex].x += underline ? altShiftPx : shiftPx;
 	}
 
 	function onShiftUp() {
-		message.body[selectedIndex].y -= shiftPx;
+		message.body[selectedIndex].y -= underline ? altShiftPx : shiftPx;
 	}
 
 	function onShiftDown() {
-		message.body[selectedIndex].y += shiftPx;
+		message.body[selectedIndex].y += underline ? altShiftPx : shiftPx;
 	}
 
 	function onRotateCw() {
@@ -88,15 +89,15 @@
 	}
 </script>
 
-<Button on:click={onShiftLeft}><Symbol>↞︎</Symbol></Button>
-<Button on:click={onShiftRight}><Symbol>↠︎</Symbol></Button>
-<Button on:click={onShiftUp}><Symbol>↟︎</Symbol></Button>
-<Button on:click={onShiftDown}><Symbol>↡︎</Symbol></Button>
 <Button on:click={onNudgeLeft}><Symbol>←︎</Symbol></Button>
 <Button on:click={onNudgeRight}><Symbol>→︎</Symbol></Button>
 <Button on:click={onNudgeUp}><Symbol>↑︎</Symbol></Button>
 <Button on:click={onNudgeDown}><Symbol>↓︎</Symbol></Button>
 <span class:underline>
+	<Button on:click={onShiftLeft}><Symbol>↞︎</Symbol></Button>
+	<Button on:click={onShiftRight}><Symbol>↠︎</Symbol></Button>
+	<Button on:click={onShiftUp}><Symbol>↟︎</Symbol></Button>
+	<Button on:click={onShiftDown}><Symbol>↡︎</Symbol></Button>
 	<Button on:click={onRotateCcw}><Symbol>↶︎</Symbol></Button>
 	<Button on:click={onRotateCw}><Symbol>↷︎</Symbol></Button>
 	<Button on:click={onGrow}><Symbol>+</Symbol></Button>
