@@ -3,13 +3,13 @@
 	import Button from '../Shared/Button.svelte';
 	import Symbol from '../Message/Symbol.svelte';
 	import Submit from './Submit.svelte';
+	import Radio from './Radio.svelte';
 	import Username from './Username.svelte';
-	import Password from './Password.svelte';
 
 	export let author = false;
 	export let isAbsolutePositioning = true;
 
-	let isAnonymous = false;
+	let isRegistered = true;
 	let username = '';
 	let isUsernameValid = false;
 	let isRegistrationOpen = false;
@@ -22,10 +22,6 @@
 		return value.replace(/[\s]/, ' ').trim();
 	}
 
-	function toggleAnonymous() {
-		isAnonymous = !isAnonymous;
-	}
-
 	function toggleAbsolutePositioning() {
 		isAbsolutePositioning = !isAbsolutePositioning;
 	}
@@ -34,7 +30,7 @@
 		author = format(username); // this can be done in schema
 	}
 
-	$: isSubmitDisabled = !isAnonymous && !isUsernameValid;
+	$: isSubmitDisabled = !isRegistered && !isUsernameValid;
 </script>
 
 {#if !isRegistrationOpen}
@@ -42,29 +38,21 @@
 		<h2 class="symbol">⚙︎</h2>
 		<section>
 			<h3>Authenticate as:</h3>
-			Registered User
-			<Button type="button" on:click={toggleAnonymous}>
-				<Symbol>{!isAnonymous ? '👈︎' : '👉︎'}</Symbol>
-			</Button>
-			Anonymous
+			<Radio a={'Registered User'} b={'Anonymous'} bind:is={isRegistered} />
 			<p>
 				or <Button type="button" on:click={openRegistration}>
 					<em>Sign Up</em>
 				</Button>.
 			</p>
 		</section>
-		{#if !isAnonymous}
+		{#if !isRegistered}
 			<section>
 				<Username bind:value={username} bind:isValid={isUsernameValid} />
 			</section>
 		{/if}
 		<section>
 			<h3>Select character positioning:</h3>
-			Absolute
-			<Button type="button" on:click={toggleAbsolutePositioning}>
-				<Symbol>{isAbsolutePositioning ? '👈︎' : '👉︎'}</Symbol>
-			</Button>
-			Relative
+			<Radio a={'Absolute'} b={'Relative'} bind:is={isAbsolutePositioning} />
 		</section>
 		<section>
 			<h3>Instructions:</h3>
