@@ -1,45 +1,63 @@
 <script>
-	import Terms from './Terms.svelte';
+	import Register from './Register.svelte';
 	import Button from '../Shared/Button.svelte';
 	import Symbol from '../Message/Symbol.svelte';
+	import Submit from './Submit.svelte';
+	import Username from './Username.svelte';
+	import Password from './Password.svelte';
 
 	export let author = false;
 	export let isAbsolutePositioning = true;
-	export let isTermsChecked = false;
 
-	let value = '';
-	let isTermsOpen = false;
+	let isAnonymous = false;
+	let username = '';
+	let isUsernameValid = false;
+	let isRegistrationOpen = false;
+
+	function openRegistration() {
+		isRegistrationOpen = true;
+	}
 
 	function format(value) {
 		return value.replace(/[\s]/, ' ').trim();
+	}
+
+	function toggleAnonymous() {
+		isAnonymous = !isAnonymous;
 	}
 
 	function toggleAbsolutePositioning() {
 		isAbsolutePositioning = !isAbsolutePositioning;
 	}
 
-	function openTerms() {
-		isTermsOpen = true;
-	}
-
 	function onSubmit() {
-		author = format(value);
+		author = format(username); // this can be done in schema
 	}
 
-	$: isValid = value.match(/^[a-zA-Z0-9_.\-@]*$/);
-	$: isSubmitDisabled = !isTermsChecked || !isValid;
+	$: isSubmitDisabled = !isAnonymous && !isUsernameValid;
 </script>
 
-{#if !isTermsOpen}
-	<form on:submit|preventDefault={onSubmit}>
+{#if !isRegistrationOpen}
+	<Submit disabled={isSubmitDisabled} on:submit={onSubmit}>
 		<h2 class="symbol">⚙︎</h2>
 		<section>
-			<h3>Username:</h3>
-			<input type="text" name="username" bind:value />
-			<div id="validation" class:isValid>
-				Valid characters: a-z, A-Z, 0-9, _, ., - and @.
-			</div>
+			<h3>Authenticate as:</h3>
+			Registered User
+			<Button type="button" on:click={toggleAnonymous}>
+				<Symbol>{!isAnonymous ? '👈︎' : '👉︎'}</Symbol>
+			</Button>
+			Anonymous
+			<p>
+				or <Button type="button" on:click={openRegistration}>
+					<em>Sign Up</em>
+				</Button>.
+			</p>
 		</section>
+		{#if !isAnonymous}
+			<section>
+				<Username bind:value={username} bind:isValid={isUsernameValid} />
+			</section>
+		{/if}
 		<section>
 			<h3>Select character positioning:</h3>
 			Absolute
@@ -49,6 +67,7 @@
 			Relative
 		</section>
 		<section>
+			<h3>Instructions:</h3>
 			<ul>
 				<li>Click on a character to start composing a new post,</li>
 				<li>
@@ -60,24 +79,9 @@
 				</li>
 			</ul>
 		</section>
-		<section>
-			<h3>
-				I agree to the<Button type="button" on:click={openTerms}>
-					service terms
-				</Button>:
-				<input type="checkbox" bind:checked={isTermsChecked} />
-			</h3>
-		</section>
-		<section>
-			<h3 class="submit">
-				<Button type="submit" disabled={isSubmitDisabled}>
-					<Symbol>✔︎</Symbol>
-				</Button>
-			</h3>
-		</section>
-	</form>
+	</Submit>
 {:else}
-	<Terms bind:isOpen={isTermsOpen} />
+	<Register bind:isOpen={isRegistrationOpen} />
 {/if}
 
 <style>
@@ -85,6 +89,9 @@
 		margin-bottom: 2rem;
 	}
 
+	p {
+		margin: 0;
+	}
 	section h3 {
 		font-weight: inherit;
 		font-size: large;
@@ -94,29 +101,5 @@
 		margin: 0;
 		list-style-type: none;
 		padding: 0;
-	}
-
-	:global(button) {
-		font-size: inherit;
-		font-family: inherit;
-	}
-
-	#validation {
-		color: red;
-	}
-
-	#validation.isValid {
-		display: none;
-	}
-
-	.submit :global(button) {
-		font-size: larger;
-	}
-
-	.submit :global(button):enabled {
-		color: green;
-	}
-	.submit :global(button):enabled:hover {
-		outline: 1px solid green;
 	}
 </style>
