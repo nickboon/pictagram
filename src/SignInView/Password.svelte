@@ -5,23 +5,16 @@
 	export let value = '';
 	export let isValid = false;
 
-	let name = label.toLowerCase();
-	let isDirty = false;
+	const name = label.toLowerCase();
+	const message = 'Required';
 
-	function onChange(value) {
-		if (isDirty) {
-			isValid = !value.match(/^$|\s+/);
-			return isValid;
-		}
-		isDirty = true;
-	}
-
-	$: isCurrentlyValid = onChange(value);
+	$: test = () => !value.match(/^$|\s+/);
 </script>
 
-<label for={name}>{label}:</label>
-<input type="password" {name} bind:value />
-<Validation isValid={isCurrentlyValid}>Required.</Validation>
+<Validation {test} {message} bind:isValid>
+	<label for={name}>{label}:</label>
+	<input type="password" {name} bind:value />
+</Validation>
 
 <style>
 	label {

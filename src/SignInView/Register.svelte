@@ -8,11 +8,10 @@
 
 	export let isOpen = true;
 
+	const message = 'Passwords must match.';
+
 	let isTermsChecked = false;
 	let isTermsOpen = false;
-	let username = '';
-	let password = '';
-	let confirmPassword = '';
 
 	function openTerms() {
 		isTermsOpen = true;
@@ -23,29 +22,29 @@
 		isOpen = false;
 	}
 
+	let username = '';
+	let password = '';
+	let confirmPassword = '';
 	let isUsernameValid = false;
 	let isPasswordValid = false;
-	let isDirty = false;
+	let isConfirmPasswordValid = false;
 
-	function onChange(confirmPassword) {
-		if (isDirty) return isPasswordValid && password === confirmPassword;
-		isDirty = true;
-	}
-
-	$: isRepeatPasswordValid = onChange(confirmPassword);
+	$: test = () => password === confirmPassword;
 	$: isSubmitDisabled =
-		!isTermsChecked || !isUsernameValid || !isRepeatPasswordValid;
+		!isTermsChecked ||
+		!isUsernameValid ||
+		!isPasswordValid ||
+		!isConfirmPasswordValid;
 </script>
 
 {#if !isTermsOpen}
 	<h2>Register</h2>
 	<Submit disabled={isSubmitDisabled} on:submit={onSubmit}>
 		<section>
-			<Username bind:value={username} bind:isValid={isUsernameValid} />
-			<Password bind:value={password} bind:isValid={isPasswordValid} />
-			<Password label="Confirm Password" bind:value={confirmPassword} />
-			<Validation isValid={isRepeatPasswordValid}>
-				Passwords must match.
+			<Validation {message} {test} bind:isValid={isConfirmPasswordValid}>
+				<Username bind:value={username} bind:isValid={isUsernameValid} />
+				<Password bind:value={password} bind:isValid={isPasswordValid} />
+				<Password label="Confirm Password" bind:value={confirmPassword} />
 			</Validation>
 		</section>
 		<section>
