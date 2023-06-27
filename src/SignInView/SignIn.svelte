@@ -5,9 +5,12 @@
 	import Submit from './Submit.svelte';
 	import Radio from './Radio.svelte';
 	import Username from './Username.svelte';
+	import AgreeTerms from './Terms.svelte';
 
 	export let author = false;
 	export let isAbsolutePositioning = true;
+
+	let isTermsChecked = false;
 
 	let isRegistered = true;
 	let username = '';
@@ -22,15 +25,12 @@
 		return value.replace(/[\s]/, ' ').trim();
 	}
 
-	function toggleAbsolutePositioning() {
-		isAbsolutePositioning = !isAbsolutePositioning;
-	}
-
 	function onSubmit() {
 		author = format(username); // this can be done in schema
 	}
 
-	$: isSubmitDisabled = !isRegistered && !isUsernameValid;
+	$: isSubmitDisabled =
+		(isRegistered && !isUsernameValid) || (!isRegistered && !isTermsChecked);
 </script>
 
 {#if !isRegistrationOpen}
@@ -45,7 +45,7 @@
 				</Button>.
 			</p>
 		</section>
-		{#if !isRegistered}
+		{#if isRegistered}
 			<section>
 				<Username bind:value={username} bind:isValid={isUsernameValid} />
 			</section>
@@ -67,6 +67,9 @@
 				</li>
 			</ul>
 		</section>
+		{#if !isRegistered}
+			<AgreeTerms bind:isChecked={isTermsChecked} />
+		{/if}
 	</Submit>
 {:else}
 	<Register bind:isOpen={isRegistrationOpen} />

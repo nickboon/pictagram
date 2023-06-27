@@ -1,15 +1,16 @@
 <script>
-	import Submit from './Submit.svelte';
+	import Button from '../Shared/Button.svelte';
 
-	export let isOpen = true;
+	export let isChecked = false;
 
-	function close() {
-		isOpen = false;
+	let isOpen = false;
+
+	function toggle() {
+		isOpen = !isOpen;
 	}
 </script>
 
-<h2>Pictagram Terms</h2>
-<Submit on:submit={close}>
+{#if isOpen}
 	<section>
 		<p>
 			This service was created as part of an application for inclusion in an art
@@ -22,4 +23,19 @@
 		</p>
 		<p>For more information contact me at boonnick at hotmail dot com.</p>
 	</section>
-</Submit>
+{/if}
+<section>
+	<h3>
+		I agree to the<Button type="button" on:click={toggle}>service terms</Button
+		>:
+		<input type="checkbox" bind:checked={isChecked} />
+	</h3>
+</section>
+
+<style>
+	section h3 {
+		font-weight: inherit;
+		font-size: large;
+		margin: initial;
+	}
+</style>
