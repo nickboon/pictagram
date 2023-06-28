@@ -16,6 +16,7 @@ Requirements
 	import Button from '../Shared/Button.svelte';
 	import Highlight from '../Shared/Highlight.svelte';
 	import Message from '../Message/message';
+	import Constants from '../../domain/message';
 	import Symbol from '../Message/Symbol.svelte';
 
 	export let messenger;
@@ -27,14 +28,14 @@ Requirements
 
 	const dispatch = createEventDispatcher();
 	const symbolPositions = isAbsolutePositioning
-		? Message.symbolPositions.absolute
-		: Message.symbolPositions.relative;
+		? Constants.symbolPositions.absolute
+		: Constants.symbolPositions.relative;
 
 	let highlight = false;
 	let message = recycledFrom || new Message({ authors: [] });
 	let symbolElements = [];
 
-	message.authors.unshift(author || Message.default.author);
+	message.authors.unshift(author || Constants.default.author);
 	message.symbolPositions = symbolPositions;
 
 	$: isSubmitDisabled = message.isEmpty;
@@ -55,7 +56,7 @@ Requirements
 		if (replyTo) message.replyTo = replyTo;
 
 		// Save original offsets for recreating original positioning e.g. when convertig to raster
-		if (symbolPositions === Message.symbolPositions.relative)
+		if (symbolPositions === Constants.symbolPositions.relative)
 			message.setOffset(symbolElements);
 
 		messenger.sendMessage(message, onMessageSent);

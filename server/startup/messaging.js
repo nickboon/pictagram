@@ -1,4 +1,4 @@
-import messageEvents from '../messageEvents.js';
+import messageEvents from '../../domain/messageEvents.js';
 
 export default function (io, messageStore) {
 	console.log('starting io');

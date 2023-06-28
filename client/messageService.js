@@ -1,4 +1,4 @@
-import messageEvents from '../messageEvents';
+import messageEvents from '../domain/messageEvents';
 
 export default class MessageService {
 	static socket = io();

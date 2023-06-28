@@ -1,22 +1,9 @@
+import Constants from '../../domain/message';
+
 export default class Message {
-	static get symbolPositions() {
-		return {
-			relative: 'relative',
-			absolute: 'absolute',
-		};
-	}
-
-	static get default() {
-		return {
-			author: 'anon',
-			authors: ['anon'],
-			symbolPositions: Message.symbolPositions.absolute,
-		};
-	}
-
 	constructor({
-		authors = Message.default.authors,
-		symbolPositions = Message.default.symbolPositions,
+		authors = Constants.default.authors,
+		symbolPositions = Constants.default.symbolPositions,
 		body = [],
 		isRecycled = false,
 	} = {}) {
@@ -65,7 +52,8 @@ export default class Message {
 	}
 
 	toAbsolute(symbolElements) {
-		if (this.symbolPositions === Message.symbolPositions.absolute) return this;
+		if (this.symbolPositions === Constants.symbolPositions.absolute)
+			return this;
 
 		this.body.forEach((symbol, index) => {
 			const symbolElement = symbolElements[index];
@@ -75,12 +63,12 @@ export default class Message {
 			symbol.offsetTop = 0;
 		});
 
-		this.symbolPositions = Message.symbolPositions.absolute;
+		this.symbolPositions = Constants.symbolPositions.absolute;
 		return this;
 	}
 
 	toRelative() {
-		this.symbolPositions = Message.symbolPositions.relative;
+		this.symbolPositions = Constants.symbolPositions.relative;
 		return this;
 	}
 

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Message from './src/Message/message.js';
+import Message from '../domain/message.js';
 
 const messageSchema = new mongoose.Schema({
 	authors: {
