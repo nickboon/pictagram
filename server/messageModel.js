@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 import Message from '../domain/message.js';
+import Validators from '../domain/validators.js';
+
+const symbolTextValidator = Validators.symbolText;
 
 const messageSchema = new mongoose.Schema({
 	authors: {
@@ -11,9 +14,7 @@ const messageSchema = new mongoose.Schema({
 			text: {
 				type: String,
 				trim: true,
-				validate: (text) => {
-					/^[←-🫶]{1}$/.test(text);
-				},
+				validate: [symbolTextValidator.isValid, symbolTextValidator.message],
 			},
 			fontSize: {
 				type: Number,

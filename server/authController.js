@@ -2,14 +2,26 @@ import UserStore from './userStore.js';
 
 const userStore = new UserStore();
 
+function handleErrors(error) {
+	if (error.code === 11000) console.log('User already registered');
+
+	if (error.message.includes('validation failed'))
+		Object.values(error.errors).forEach(({ properties }) =>
+			console.log(properties.path, properties.message)
+		);
+}
+
 const post = {
 	signup: async (req, res) => {
 		try {
 			const user = await userStore.create(req.body);
 			res.status(201).json(user);
 		} catch (error) {
-			console.log(error);
-			res.status(400).send('error: user not created');
+			handleErrors(error);
+
+			if (error.code === 11000) res.sendStatus(409);
+
+			res.sendStatus(400);
 		}
 	},
 

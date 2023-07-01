@@ -1,15 +1,18 @@
 import mongoose from 'mongoose';
+import Validators from '../domain/validators.js';
+
+const usernameValidator = Validators.username;
 
 const userSchema = new mongoose.Schema({
 	username: {
 		type: String,
-		required: true,
+		required: [true, 'Required'],
 		unique: true,
-		// ToDo: sanitise with regex
+		validate: [usernameValidator.isValid, usernameValidator.message],
 	},
 	password: {
 		type: String,
-		required: true,
+		required: [true, 'Required'],
 	},
 });
 

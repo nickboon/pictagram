@@ -1,11 +1,13 @@
 <script>
 	import Validation from './Validation.svelte';
+	import Validators from '../../domain/validators';
 
 	export let value = '';
 	export let isValid = false;
 
-	const message = 'Required. Valid characters: a-z, A-Z, 0-9, _, ., - and @.';
-	$: test = () => value.match(/^[a-zA-Z0-9_.\-@]+$/);
+	const usernameValidator = Validators.username;
+	const message = `Required. ${usernameValidator.message}`;
+	$: test = () => usernameValidator.isValid(value);
 </script>
 
 <Validation {test} {message} bind:isValid>
