@@ -6,14 +6,36 @@
 	import Validation from './Validation.svelte';
 
 	export let isOpen = true;
+	export let author = false;
+	export let token = false;
 
 	const message = 'Passwords must match.';
 
 	let isTermsChecked = false;
 
-	function onSubmit() {
-		console.log('registering...');
-		isOpen = false;
+	async function onSubmit() {
+		let data = false;
+		try {
+			const response = await fetch('/signup', {
+				method: 'POST',
+				body: JSON.stringify({
+					username,
+					password,
+				}),
+				headers: { 'Content-Type': 'application/json' },
+			});
+			if (response.status === 409) throw new Error('User already registered.');
+			if (!response.ok) throw new Error(response.status);
+			data = await response.json();
+			author = data.user;
+			token = response.headers.get('x-auth-token');
+			isOpen = false;
+		} catch (error) {
+			responseError = error.message;
+			if (data.errors) {
+				console.log(data.errors);
+			}
+		}
 	}
 
 	let username = '';
@@ -22,6 +44,7 @@
 	let isUsernameValid = false;
 	let isPasswordValid = false;
 	let isConfirmPasswordValid = false;
+	let responseError = false;
 
 	$: test = () => password === confirmPassword;
 	$: isSubmitDisabled =
@@ -42,20 +65,21 @@
 	</section>
 	<AgreeTerms bind:isChecked={isTermsChecked} />
 </Submit>
+{#if responseError}
+	<div class="errors">Error: {responseError}</div>
+{/if}
 
 <style>
 	section {
 		margin-bottom: 2rem;
 	}
 
-	/* section h3 {
-		font-weight: inherit;
-		font-size: large;
-		margin: initial;
-	} */
-
 	:global(button) {
 		font-size: inherit;
 		font-family: inherit;
+	}
+
+	.errors {
+		color: red;
 	}
 </style>

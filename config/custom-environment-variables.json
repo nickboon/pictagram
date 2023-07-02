@@ -1,3 +1,4 @@
 {
-	"db": "pictagram_db"
+	"db": "pictagram_db",
+	"jwtPrivateKey": "pictagram_jwtPrivateKey"
 }

@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import config from 'config';
 import Validators from '../domain/validators.js';
 
 const usernameValidator = Validators.username;
-
 const userSchema = new mongoose.Schema({
 	username: {
 		type: String,
@@ -16,6 +17,16 @@ const userSchema = new mongoose.Schema({
 		required: [true, 'Required'],
 	},
 });
+
+const maxage = 3 * 24 * 60 * 60;
+const secret = config.get('jwtPrivateKey');
+
+userSchema.methods.generateAuthToken = function () {
+	const token = jwt.sign({ user: this.username }, secret, {
+		expiresIn: maxage,
+	});
+	return token;
+};
 
 userSchema.pre('save', async function (next) {
 	const salt = await bcrypt.genSalt();

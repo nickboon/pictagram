@@ -1,6 +1,13 @@
+import config from 'config';
+
 import messageEvents from '../../domain/messageEvents.js';
 
 export default function (io, messageStore) {
+	if (!config.get('jwtPrivateKey')) {
+		console.error('FATAL ERROR: jwt private key is not defined');
+		process.exit(1);
+	}
+
 	console.log('starting io');
 	io.on('connection', (socket) => {
 		const update = () =>

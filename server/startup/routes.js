@@ -1,5 +1,5 @@
 import express from 'express';
-import { post } from '../authController.js';
+import { post } from '../userController.js';
 
 export default function (app) {
 	app.use(express.json());

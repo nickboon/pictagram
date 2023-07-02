@@ -1,35 +1,41 @@
 import UserStore from './userStore.js';
 
-const userStore = new UserStore();
-
 function handleErrors(error) {
-	if (error.code === 11000) console.log('User already registered');
-
 	if (error.message.includes('validation failed'))
 		Object.values(error.errors).forEach(({ properties }) =>
 			console.log(properties.path, properties.message)
 		);
 }
 
+const userStore = new UserStore();
 const post = {
 	signup: async (req, res) => {
 		try {
 			const user = await userStore.create(req.body);
-			res.status(201).json(user);
+			const token = user.generateAuthToken();
+			res
+				.status(201)
+				.header('x-auth-token', token)
+				.json({ user: user.username });
 		} catch (error) {
-			handleErrors(error);
-
 			if (error.code === 11000) res.sendStatus(409);
-
-			res.sendStatus(400);
+			else {
+				handleErrors(error);
+				res.sendStatus(400);
+			}
 		}
 	},
 
 	login: async (req, res) => {
-		const { username, password } = req.body;
-		console.log('POST login', username, password);
-
-		res.send('New Login');
+		try {
+			// check if user exists and password matches
+			// create token
+			// return user and token
+			res.send('New Login');
+		} catch (error) {
+			handleErrors(error);
+			res.sendStatus(400);
+		}
 	},
 };
 

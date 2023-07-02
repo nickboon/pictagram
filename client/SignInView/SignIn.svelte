@@ -8,6 +8,7 @@
 	import AgreeTerms from './Terms.svelte';
 
 	export let author = false;
+	export let token = false;
 	export let isAbsolutePositioning = true;
 
 	let isTermsChecked = false;
@@ -72,7 +73,7 @@
 		{/if}
 	</Submit>
 {:else}
-	<Register bind:isOpen={isRegistrationOpen} />
+	<Register bind:isOpen={isRegistrationOpen} bind:author bind:token />
 {/if}
 
 <style>
