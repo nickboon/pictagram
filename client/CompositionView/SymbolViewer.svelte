@@ -1,5 +1,5 @@
 <script>
-	import { blocks } from './unicodeBlock';
+	import { blocks } from '../../domain/unicodeBlock';
 	import SymbolEntity from './SymbolEntity.svelte';
 	import Symbol from '../Message/Symbol.svelte';
 	import Button from '../Shared/Button.svelte';
