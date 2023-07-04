@@ -1,4 +1,6 @@
 <script>
+	import ErrorMessage from '../Shared/ErrorMessage.svelte';
+
 	export let message = '';
 	export let test = () => false;
 	export let isValid = true;
@@ -18,14 +20,10 @@
 
 <slot />
 <div class:hidden>
-	{message}
+	<ErrorMessage>{message}</ErrorMessage>
 </div>
 
 <style>
-	div {
-		color: red;
-	}
-
 	div.hidden {
 		visibility: hidden;
 	}

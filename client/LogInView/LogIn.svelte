@@ -5,6 +5,8 @@
 	import Submit from './Submit.svelte';
 	import Radio from './Radio.svelte';
 	import Username from './Username.svelte';
+	import Password from './Password.svelte';
+	import ErrorMessage from '../Shared/ErrorMessage.svelte';
 	import AgreeTerms from './Terms.svelte';
 
 	export let author = false;
@@ -15,23 +17,43 @@
 
 	let isRegistered = true;
 	let username = '';
+	let password = '';
 	let isUsernameValid = false;
+	let isPasswordValid = false;
+	let responseError = '';
 	let isRegistrationOpen = false;
 
 	function openRegistration() {
 		isRegistrationOpen = true;
 	}
 
-	function format(value) {
-		return value.replace(/[\s]/, ' ').trim();
-	}
-
-	function onSubmit() {
-		author = format(username); // this can be done in schema
+	async function onSubmit() {
+		let data = false;
+		try {
+			const response = await fetch('/login', {
+				method: 'POST',
+				body: JSON.stringify({
+					username,
+					password,
+				}),
+				headers: { 'Content-Type': 'application/json' },
+			});
+			if (response.status === 400) throw new Error('Invalid credentials.');
+			if (!response.ok) throw new Error('Login failed.');
+			data = await response.json();
+			author = data.user;
+			token = response.headers.get('x-auth-token');
+			responseError = '';
+			isOpen = false;
+		} catch (error) {
+			responseError = error.message;
+		}
 	}
 
 	$: isSubmitDisabled =
-		(isRegistered && !isUsernameValid) || (!isRegistered && !isTermsChecked);
+		(isRegistered && !isUsernameValid) ||
+		!isPasswordValid ||
+		(!isRegistered && !isTermsChecked);
 </script>
 
 {#if !isRegistrationOpen}
@@ -49,6 +71,10 @@
 		{#if isRegistered}
 			<section>
 				<Username bind:value={username} bind:isValid={isUsernameValid} />
+				<Password bind:value={password} bind:isValid={isPasswordValid} />
+				{#if responseError}
+					<ErrorMessage>Error: {responseError}</ErrorMessage>
+				{/if}
 			</section>
 		{/if}
 		<section>

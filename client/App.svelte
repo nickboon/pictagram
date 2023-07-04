@@ -1,6 +1,6 @@
 <script>
 	import Banner from './Banner.svelte';
-	import SignIn from './SignInView/SignIn.svelte';
+	import Login from './LogInView/LogIn.svelte';
 	import Composition from './CompositionView/Composition.svelte';
 	import Messages from './MessagesView/Messages.svelte';
 	import MessageService from './messageService';
@@ -24,7 +24,7 @@
 <main>
 	<Banner bind:viewed />
 	{#if author === false}
-		<SignIn bind:author bind:isAbsolutePositioning bind:token />
+		<Login bind:author bind:isAbsolutePositioning bind:token />
 	{:else}
 		<Composition {messenger} {author} {isAbsolutePositioning} bind:viewed />
 		<Messages {messenger} {author} {isAbsolutePositioning} {messages} />

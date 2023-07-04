@@ -4,6 +4,7 @@
 	import Username from './Username.svelte';
 	import Password from './Password.svelte';
 	import Validation from './Validation.svelte';
+	import ErrorMessage from '../Shared/ErrorMessage.svelte';
 
 	export let isOpen = true;
 	export let author = false;
@@ -66,7 +67,7 @@
 	<AgreeTerms bind:isChecked={isTermsChecked} />
 </Submit>
 {#if responseError}
-	<div class="errors">Error: {responseError}</div>
+	<div><ErrorMessage>Error: {responseError}</ErrorMessage></div>
 {/if}
 
 <style>
@@ -77,9 +78,5 @@
 	:global(button) {
 		font-size: inherit;
 		font-family: inherit;
-	}
-
-	.errors {
-		color: red;
 	}
 </style>

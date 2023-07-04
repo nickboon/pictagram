@@ -28,6 +28,19 @@ userSchema.methods.generateAuthToken = function () {
 	return token;
 };
 
+userSchema.statics.login = async function (username, password) {
+	console.log('login', username, password);
+	const user = await this.findOne({ username });
+	console.log('user', user);
+	if (user) {
+		const isValid = await bcrypt.compare(password, user.password);
+		console.log('isValid', isValid);
+		if (isValid) return user;
+		throw Error('Invalid credentials');
+	}
+	throw Error('Invalid credentials');
+};
+
 userSchema.pre('save', async function (next) {
 	const salt = await bcrypt.genSalt();
 	this.password = await bcrypt.hash(this.password, salt);
