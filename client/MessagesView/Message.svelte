@@ -1,39 +1,48 @@
 <script>
-	import { createEventDispatcher, tick } from 'svelte';
 	import MessageHeader from '../Message/MessageHeader.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
 	import Composition from '../CompositionView/Composition.svelte';
 	import Button from '../Shared/Button.svelte';
 	import Symbol from '../Message/Symbol.svelte';
-	import Message from '../Message/message.js';
+	import Overlay from '../Shared/Overlay.svelte';
+	import Download from './Download.svelte';
+	import Message from '../Message/message';
+	import Consts from '../../domain/message';
+	import Reaction from './reaction';
 
 	export let message = new Message();
 	export let messenger;
-	export let author;
+	//export let author;
 	export let isAbsolutePositioning = true;
 
-	const dispatch = createEventDispatcher();
+	//const dispatch = createEventDispatcher();
 
 	let symbolElements = [];
 	let isReplying = false;
 	let recycledFrom;
 	let post;
+	let download = false;
 
-	function reply() {
+	function onReactionSent(error) {
+		if (error) return console.log(error);
+	}
+
+	function onReply() {
 		isReplying = !isReplying;
 	}
 
 	function loadRecycledComposition() {
 		message.isRecycled = true;
 		recycledFrom = message;
-		reply();
+		onReply();
 	}
 
-	function recycle() {
+	function onRecycle() {
 		message = Message.clone(message);
+
 		if (
 			!isAbsolutePositioning &&
-			message.symbolPositions === Message.symbolPositions.absolute
+			message.symbolPositions === Consts.symbolPositions.absolute
 		) {
 			message.toRelative();
 			tick().then(() => {
@@ -44,7 +53,7 @@
 		}
 		if (
 			isAbsolutePositioning &&
-			message.symbolPositions === Message.symbolPositions.relative
+			message.symbolPositions === Consts.symbolPositions.relative
 		) {
 			message = message.toAbsolute(symbolElements);
 		}
@@ -52,8 +61,10 @@
 		loadRecycledComposition();
 	}
 
-	function download() {
-		dispatch('download', message);
+	function onDownload() {
+		download = message;
+		const reaction = new Reaction(Reaction.actions.downloaded, message);
+		messenger.reactToMessage(reaction, onReactionSent);
 	}
 
 	function onSubmit() {
@@ -66,13 +77,13 @@
 		<MessageHeader {message} />
 		<ul class="options">
 			<li>
-				<Button on:click={reply}><Symbol>↩︎</Symbol></Button>
+				<Button on:click={onReply}><Symbol>↩︎</Symbol></Button>
 			</li>
 			<li>
-				<Button on:click={recycle}><Symbol>♻︎</Symbol></Button>
+				<Button on:click={onRecycle}><Symbol>♻︎</Symbol></Button>
 			</li>
 			<li>
-				<Button on:click={download}><Symbol>📸︎</Symbol></Button>
+				<Button on:click={onDownload}><Symbol>📸︎</Symbol></Button>
 			</li>
 		</ul>
 		<MessageBody {message} bind:symbolElements />
@@ -81,13 +92,17 @@
 		<Composition
 			{recycledFrom}
 			{messenger}
-			{author}
 			{isAbsolutePositioning}
 			replyTo={Message.clone(message).toAbsolute(symbolElements)}
 			on:submit={onSubmit}
 		/>
 	{/if}
 </section>
+{#if download}
+	<Overlay>
+		<Download bind:message={download} />
+	</Overlay>
+{/if}
 
 <style>
 	ul {

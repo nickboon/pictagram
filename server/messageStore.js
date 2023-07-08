@@ -10,8 +10,6 @@ export default class MessageStore {
 	}
 
 	putById(id, filter) {
-		return Message.findByIdAndUpdate(id, filter).then((message) =>
-			message.save()
-		);
+		return Message.findByIdAndUpdate(id, filter);
 	}
 }

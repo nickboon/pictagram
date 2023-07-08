@@ -20,7 +20,6 @@ Requirements
 	import Symbol from '../Message/Symbol.svelte';
 
 	export let messenger;
-	export let author = Message.default.author;
 	export let viewed = false;
 	export let isAbsolutePositioning = true;
 	export let replyTo = undefined;
@@ -35,7 +34,6 @@ Requirements
 	let message = recycledFrom || new Message({ authors: [] });
 	let symbolElements = [];
 
-	message.authors.unshift(author || Constants.default.author);
 	message.symbolPositions = symbolPositions;
 
 	$: isSubmitDisabled = message.isEmpty;

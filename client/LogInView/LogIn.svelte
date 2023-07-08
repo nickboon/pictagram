@@ -9,7 +9,7 @@
 	import ErrorMessage from '../Shared/ErrorMessage.svelte';
 	import AgreeTerms from './Terms.svelte';
 
-	export let author = false;
+	export let isOpen = true;
 	export let token = false;
 	export let isAbsolutePositioning = true;
 
@@ -28,7 +28,11 @@
 	}
 
 	async function onSubmit() {
-		let data = false;
+		if (!isRegistered) {
+			isOpen = false;
+			return;
+		}
+
 		try {
 			const response = await fetch('/login', {
 				method: 'POST',
@@ -40,8 +44,6 @@
 			});
 			if (response.status === 400) throw new Error('Invalid credentials.');
 			if (!response.ok) throw new Error('Login failed.');
-			data = await response.json();
-			author = data.user;
 			token = response.headers.get('x-auth-token');
 			responseError = '';
 			isOpen = false;
@@ -51,8 +53,7 @@
 	}
 
 	$: isSubmitDisabled =
-		(isRegistered && !isUsernameValid) ||
-		!isPasswordValid ||
+		(isRegistered && (!isUsernameValid || !isPasswordValid)) ||
 		(!isRegistered && !isTermsChecked);
 </script>
 
@@ -99,7 +100,7 @@
 		{/if}
 	</Submit>
 {:else}
-	<Register bind:isOpen={isRegistrationOpen} bind:author bind:token />
+	<Register bind:isOpen={isRegistrationOpen} bind:token />
 {/if}
 
 <style>

@@ -1,9 +1,10 @@
 import messageEvents from '../domain/messageEvents';
 
 export default class MessageService {
-	static socket = io();
+	static socket;
 
-	constructor(messageRecievedHandler, updateHandler) {
+	constructor(messageRecievedHandler, updateHandler, token) {
+		MessageService.socket = io({ auth: { token } });
 		MessageService.socket.on(messageEvents.messageSent, messageRecievedHandler);
 		MessageService.socket.on(messageEvents.update, updateHandler);
 	}

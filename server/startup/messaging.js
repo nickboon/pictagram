@@ -1,6 +1,6 @@
 import config from 'config';
-
 import messageEvents from '../../domain/messageEvents.js';
+import { auth } from './socketMiddleware.js';
 
 export default function (io, messageStore) {
 	if (!config.get('jwtPrivateKey')) {
@@ -9,22 +9,27 @@ export default function (io, messageStore) {
 	}
 
 	console.log('starting io');
+	io.use(auth);
 	io.on('connection', (socket) => {
 		const update = () =>
 			messageStore
 				.fetch()
 				.then((messages) => socket.emit(messageEvents.update, messages));
 
-		socket.on(messageEvents.messageSent, (messageText, callback) => {
-			messageStore.add(messageText).then(update);
+		socket.on(messageEvents.messageSent, (message, callback) => {
+			message.authors.unshift(socket.user);
+			messageStore.add(message).then(update);
 			callback();
 		});
 
-		socket.on(messageEvents.reactionSent, (reaction, callback) => {
-			const update = {};
-			update[reaction.key] = reaction.value;
+		socket.on(messageEvents.reactionSent, ({ action, message }, callback) => {
+			const filter = {};
+			const key = `${action}By`;
+			const value = message[key];
+			value.push(socket.user);
+			filter[key] = value;
+			messageStore.putById(message._id, filter).then(update);
 
-			messageStore.putById(reaction.messageId, update).then(update);
 			callback();
 		});
 

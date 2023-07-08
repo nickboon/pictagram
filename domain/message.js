@@ -8,8 +8,8 @@ export default class Message {
 
 	static get default() {
 		return {
-			author: 'anon',
-			authors: ['anon'],
+			author: 'Anon',
+			authors: ['Anon'],
 			symbolPositions: Message.symbolPositions.absolute,
 		};
 	}

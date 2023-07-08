@@ -6,11 +6,11 @@
 	import MessageService from './messageService';
 
 	let viewed = false;
-	let author = false;
+	let isLoginOpen = true;
 	let token = false;
 	let isAbsolutePositioning = true;
 	let messages = [];
-	let messenger = new MessageService(onMessageReceived, onUpdate);
+	let messenger;
 
 	function onUpdate(update) {
 		messages = update;
@@ -19,15 +19,22 @@
 	function onMessageReceived(recievedMessage) {
 		messages = [recievedMessage, ...messages];
 	}
+
+	function onChange(isLoginOpen) {
+		if (isLoginOpen || messenger) return;
+		messenger = new MessageService(onMessageReceived, onUpdate, token);
+	}
+
+	$: onChange(isLoginOpen);
 </script>
 
 <main>
 	<Banner bind:viewed />
-	{#if author === false}
-		<Login bind:author bind:isAbsolutePositioning bind:token />
+	{#if isLoginOpen === true}
+		<Login bind:isOpen={isLoginOpen} bind:isAbsolutePositioning bind:token />
 	{:else}
-		<Composition {messenger} {author} {isAbsolutePositioning} bind:viewed />
-		<Messages {messenger} {author} {isAbsolutePositioning} {messages} />
+		<Composition {messenger} {isAbsolutePositioning} bind:viewed />
+		<Messages {messenger} {isAbsolutePositioning} {messages} />
 	{/if}
 </main>
 

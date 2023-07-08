@@ -7,7 +7,6 @@
 	import ErrorMessage from '../Shared/ErrorMessage.svelte';
 
 	export let isOpen = true;
-	export let author = false;
 	export let token = false;
 
 	const message = 'Passwords must match.';
@@ -28,7 +27,6 @@
 			if (response.status === 409) throw new Error('User already registered.');
 			if (!response.ok) throw new Error(response.status);
 			data = await response.json();
-			author = data.user;
 			token = response.headers.get('x-auth-token');
 			isOpen = false;
 		} catch (error) {
