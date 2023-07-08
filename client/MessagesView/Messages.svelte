@@ -1,7 +1,6 @@
 <script>
 	import Message from './Message.svelte';
 
-	export let messenger;
 	export let isAbsolutePositioning = true;
 	export let messages = [];
 </script>
@@ -9,7 +8,7 @@
 <ul>
 	{#each messages as message}
 		<li>
-			<Message {message} {isAbsolutePositioning} {messenger} />
+			<Message {message} {isAbsolutePositioning} on:react on:submit />
 		</li>
 	{/each}
 </ul>

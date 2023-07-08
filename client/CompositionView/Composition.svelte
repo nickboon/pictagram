@@ -19,7 +19,6 @@ Requirements
 	import Constants from '../../domain/message';
 	import Symbol from '../Message/Symbol.svelte';
 
-	export let messenger;
 	export let viewed = false;
 	export let isAbsolutePositioning = true;
 	export let replyTo = undefined;
@@ -42,10 +41,6 @@ Requirements
 		message.empty();
 	}
 
-	function onMessageSent(error) {
-		if (error) return console.log(error);
-	}
-
 	function onSubmit() {
 		isSubmitDisabled = true;
 		message.date = Date();
@@ -57,9 +52,8 @@ Requirements
 		if (symbolPositions === Constants.symbolPositions.relative)
 			message.setOffset(symbolElements);
 
-		messenger.sendMessage(message, onMessageSent);
+		dispatch('submit', message);
 		reset();
-		dispatch('submit');
 	}
 </script>
 

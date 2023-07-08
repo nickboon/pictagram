@@ -1,4 +1,5 @@
 <script>
+	import { createEventDispatcher, tick } from 'svelte';
 	import MessageHeader from '../Message/MessageHeader.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
 	import Composition from '../CompositionView/Composition.svelte';
@@ -11,21 +12,15 @@
 	import Reaction from './reaction';
 
 	export let message = new Message();
-	export let messenger;
-	//export let author;
 	export let isAbsolutePositioning = true;
 
-	//const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
 	let symbolElements = [];
 	let isReplying = false;
 	let recycledFrom;
 	let post;
 	let download = false;
-
-	function onReactionSent(error) {
-		if (error) return console.log(error);
-	}
 
 	function onReply() {
 		isReplying = !isReplying;
@@ -64,11 +59,18 @@
 	function onDownload() {
 		download = message;
 		const reaction = new Reaction(Reaction.actions.downloaded, message);
-		messenger.reactToMessage(reaction, onReactionSent);
+		dispatch('react', reaction);
 	}
 
-	function onSubmit() {
+	function onSubmit(event) {
+		dispatch('submit', event.detail);
 		isReplying = false;
+	}
+
+	function buildReplyTo(message) {
+		const clone = Message.clone(message).toAbsolute(symbolElements);
+		clone._id = message._id;
+		return clone;
 	}
 </script>
 
@@ -91,9 +93,8 @@
 	{#if isReplying}
 		<Composition
 			{recycledFrom}
-			{messenger}
 			{isAbsolutePositioning}
-			replyTo={Message.clone(message).toAbsolute(symbolElements)}
+			replyTo={buildReplyTo(message)}
 			on:submit={onSubmit}
 		/>
 	{/if}

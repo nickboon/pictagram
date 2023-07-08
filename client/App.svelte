@@ -12,6 +12,18 @@
 	let messages = [];
 	let messenger;
 
+	function onMessageEvent(error) {
+		if (error) return console.log(error);
+	}
+
+	function onSubmit(event) {
+		messenger.sendMessage(event.detail, onMessageEvent);
+	}
+
+	function onReact(event) {
+		messenger.reactToMessage(event.detail, onMessageEvent);
+	}
+
 	function onUpdate(update) {
 		messages = update;
 	}
@@ -33,8 +45,13 @@
 	{#if isLoginOpen === true}
 		<Login bind:isOpen={isLoginOpen} bind:isAbsolutePositioning bind:token />
 	{:else}
-		<Composition {messenger} {isAbsolutePositioning} bind:viewed />
-		<Messages {messenger} {isAbsolutePositioning} {messages} />
+		<Composition {isAbsolutePositioning} bind:viewed on:submit={onSubmit} />
+		<Messages
+			{isAbsolutePositioning}
+			{messages}
+			on:react={onReact}
+			on:submit={onSubmit}
+		/>
 	{/if}
 </main>
 
