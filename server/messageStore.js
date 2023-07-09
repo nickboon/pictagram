@@ -5,6 +5,10 @@ export default class MessageStore {
 		return Message.find().sort({ _id: -1 });
 	}
 
+	fetchById(id) {
+		return Message.findById(id);
+	}
+
 	add(message) {
 		return new Message(message).save();
 	}

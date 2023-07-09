@@ -21,8 +21,8 @@ Requirements
 
 	export let viewed = false;
 	export let isAbsolutePositioning = true;
-	export let replyTo = undefined;
-	export let recycledFrom = undefined;
+	export let replyTo = false;
+	export let message = new Message();
 
 	const dispatch = createEventDispatcher();
 	const symbolPositions = isAbsolutePositioning
@@ -30,12 +30,9 @@ Requirements
 		: Constants.symbolPositions.relative;
 
 	let highlight = false;
-	let message = recycledFrom || new Message({ authors: [] });
 	let symbolElements = [];
 
 	message.symbolPositions = symbolPositions;
-
-	$: isSubmitDisabled = message.isEmpty;
 
 	function reset() {
 		message.empty();
@@ -55,6 +52,8 @@ Requirements
 		dispatch('submit', message);
 		reset();
 	}
+
+	$: isSubmitDisabled = message.isEmpty;
 </script>
 
 <SymbolViewer bind:message bind:viewed />

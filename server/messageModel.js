@@ -7,7 +7,7 @@ const symbolTextValidator = Validators.symbolText;
 const messageSchema = new mongoose.Schema({
 	authors: {
 		type: [String],
-		default: Message.default.authors,
+		default: [Message.default.author],
 	},
 	body: [
 		{
@@ -68,6 +68,18 @@ const messageSchema = new mongoose.Schema({
 		default: false,
 	},
 	downloadedBy: {
+		type: [String],
+		default: [],
+	},
+	repliedToBy: {
+		type: [String],
+		default: [],
+	},
+	recycledBy: {
+		type: [String],
+		default: [],
+	},
+	likedBy: {
 		type: [String],
 		default: [],
 	},

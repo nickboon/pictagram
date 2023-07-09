@@ -18,59 +18,77 @@
 
 	let symbolElements = [];
 	let isReplying = false;
-	let recycledFrom;
+	let messageToRecycle = undefined;
 	let post;
 	let download = false;
+
+	function dispatchReaction(action, message) {
+		dispatch('react', new Reaction(action, message));
+	}
 
 	function onReply() {
 		isReplying = !isReplying;
 	}
 
-	function loadRecycledComposition() {
-		message.isRecycled = true;
-		recycledFrom = message;
-		onReply();
+	function loadRecycledComposition(clone) {
+		clone.isRecycled = true;
+		messageToRecycle = clone;
+		isReplying = !isReplying;
 	}
 
 	function onRecycle() {
-		message = Message.clone(message);
+		let clone = Message.clone(message);
 
 		if (
 			!isAbsolutePositioning &&
-			message.symbolPositions === Consts.symbolPositions.absolute
+			clone.symbolPositions === Consts.symbolPositions.absolute
 		) {
-			message.toRelative();
+			clone.toRelative();
 			tick().then(() => {
-				message = message.restoreOffset(symbolElements);
-				loadRecycledComposition();
+				clone = clone.restoreOffset(symbolElements);
+				loadRecycledComposition(clone);
 			});
 			return;
 		}
 		if (
 			isAbsolutePositioning &&
-			message.symbolPositions === Consts.symbolPositions.relative
+			clone.symbolPositions === Consts.symbolPositions.relative
 		) {
-			message = message.toAbsolute(symbolElements);
+			clone = clone.toAbsolute(symbolElements);
 		}
 
-		loadRecycledComposition();
+		loadRecycledComposition(clone);
 	}
 
 	function onDownload() {
 		download = message;
-		const reaction = new Reaction(Reaction.actions.downloaded, message);
-		dispatch('react', reaction);
+		dispatchReaction(Consts.reactions.downloaded, message);
+	}
+
+	function onLike() {
+		dispatchReaction(Consts.reactions.liked, message);
 	}
 
 	function onSubmit(event) {
-		dispatch('submit', event.detail);
+		const newMessage = event.detail;
+		dispatch('submit', newMessage);
+
+		console.log(
+			'Message.onSubmit id isRecycled',
+			message._id,
+			newMessage.isRecycled
+		);
+		const action = newMessage.isRecycled
+			? Consts.reactions.recycled
+			: Consts.reactions.repliedTo;
+		dispatch('react', new Reaction(action, message));
 		isReplying = false;
 	}
 
-	function buildReplyTo(message) {
-		const clone = Message.clone(message).toAbsolute(symbolElements);
-		clone._id = message._id;
-		return clone;
+	function buildReplyTo() {
+		const replyTo = Message.clone(message).toAbsolute(symbolElements);
+		replyTo._id = message._id;
+		return replyTo;
 	}
 </script>
 
@@ -79,22 +97,29 @@
 		<MessageHeader {message} />
 		<ul class="options">
 			<li>
+				<Button on:click={onLike}><Symbol>👍︎</Symbol></Button>
+				{message.likedBy.length}
+			</li>
+			<li>
 				<Button on:click={onReply}><Symbol>↩︎</Symbol></Button>
+				{message.repliedToBy.length}
 			</li>
 			<li>
 				<Button on:click={onRecycle}><Symbol>♻︎</Symbol></Button>
+				{message.recycledBy.length}
 			</li>
 			<li>
 				<Button on:click={onDownload}><Symbol>📸︎</Symbol></Button>
+				{message.downloadedBy.length}
 			</li>
 		</ul>
 		<MessageBody {message} bind:symbolElements />
 	</article>
 	{#if isReplying}
 		<Composition
-			{recycledFrom}
+			message={messageToRecycle}
 			{isAbsolutePositioning}
-			replyTo={buildReplyTo(message)}
+			replyTo={buildReplyTo()}
 			on:submit={onSubmit}
 		/>
 	{/if}

@@ -32,7 +32,6 @@ userSchema.statics.login = async function (username, password) {
 	const user = await this.findOne({ username });
 	if (user) {
 		const isValid = await bcrypt.compare(password, user.password);
-		console.log('isValid', isValid);
 		if (isValid) return user;
 		throw Error('Invalid credentials');
 	}

@@ -12,6 +12,9 @@ export default class Message {
 		this.body = body;
 		this.isRecycled = isRecycled;
 		this.downloadedBy = [];
+		this.repliedToBy = [];
+		this.recycledBy = [];
+		this.likedBy = [];
 	}
 
 	get isEmpty() {

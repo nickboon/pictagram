@@ -1,6 +1,8 @@
 import config from 'config';
 import messageEvents from '../../domain/messageEvents.js';
 import { auth } from './socketMiddleware.js';
+import Message from '../../domain/message.js';
+import c from 'config';
 
 export default function (io, messageStore) {
 	if (!config.get('jwtPrivateKey')) {
@@ -10,29 +12,61 @@ export default function (io, messageStore) {
 
 	console.log('starting io');
 	io.use(auth);
-	io.on('connection', (socket) => {
-		const update = () =>
-			messageStore
+	io.on('connection', async (socket) => {
+		async function update() {
+			await messageStore
 				.fetch()
 				.then((messages) => socket.emit(messageEvents.update, messages));
+		}
 
-		socket.on(messageEvents.messageSent, (message, callback) => {
-			message.authors.unshift(socket.user);
-			messageStore.add(message).then(update);
-			callback();
+		socket.on(messageEvents.messageSent, async (message, callback) => {
+			try {
+				message.authors.unshift(socket.user);
+				await messageStore.add(message).then(update);
+				callback();
+			} catch (error) {
+				console.log(error);
+			}
 		});
 
-		socket.on(messageEvents.reactionSent, ({ action, message }, callback) => {
+		async function updateRecycled(id, callback) {
+			const repliedToMessage = await messageStore.fetchById(id);
+			updateReaction(Message.reactions.recycled, repliedToMessage, callback);
+
+			if (repliedToMessage?.replyTo?._id)
+				await updateRecycled(repliedToMessage.replyTo._id, callback);
+		}
+
+		async function updateReaction(action, message, callback) {
 			const filter = {};
 			const key = `${action}By`;
 			const value = message[key];
 			value.push(socket.user);
 			filter[key] = value;
 			messageStore.putById(message._id, filter).then(update);
-
 			callback();
-		});
+		}
 
-		update();
+		socket.on(
+			messageEvents.reactionSent,
+			async ({ action, message }, callback) => {
+				try {
+					await updateReaction(action, message, callback);
+
+					if (action === Message.reactions.recycled && message?.replyTo?._id) {
+						await updateRecycled(message.replyTo._id, callback);
+						return;
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			}
+		);
+
+		try {
+			await update();
+		} catch (error) {
+			console.log(error);
+		}
 	});
 }
