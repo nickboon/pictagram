@@ -52,6 +52,12 @@
 		}
 	}
 
+	function onChange(token) {
+		if (token) isOpen = false;
+	}
+
+	$: onChange(token);
+
 	$: isSubmitDisabled =
 		(isRegistered && (!isUsernameValid || !isPasswordValid)) ||
 		(!isRegistered && !isTermsChecked);
