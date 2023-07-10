@@ -51,6 +51,13 @@ export default function (io, messageStore) {
 			messageEvents.reactionSent,
 			async ({ action, message }, callback) => {
 				try {
+					if (
+						action === Message.reactions.liked &&
+						message?.likedBy.includes(socket.user)
+					) {
+						return;
+					}
+
 					await updateReaction(action, message, callback);
 
 					if (action === Message.reactions.recycled && message?.replyTo?._id) {
