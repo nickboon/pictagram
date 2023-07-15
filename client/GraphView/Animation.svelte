@@ -6,10 +6,12 @@
 	export let background = 'white';
 	export let width = 0;
 	export let height = 0;
+	export let is3d = true;
 
 	const spriteSvgs = {};
 
 	function update() {
+		if (is3d) sprites.sort((a, b) => a.z - b.z);
 		sprites.forEach((sprite) => {
 			const state = sprite.getState();
 			spriteSvgs[sprite.id].update(state);
@@ -21,7 +23,10 @@
 	}
 
 	function init() {
-		update();
+		sprites.forEach((sprite) => {
+			const state = sprite.getInitState();
+			spriteSvgs[sprite.id].init(state);
+		});
 		restart();
 	}
 
@@ -29,7 +34,6 @@
 </script>
 
 <svg
-	id="animation"
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 {width} {height}"
 	style="background-color: {background};"
@@ -38,10 +42,7 @@
 		<svelte:component
 			this={sprite.type}
 			class={sprite.class}
-			state={sprite.state}
 			bind:this={spriteSvgs[sprite.id]}
-		>
-			{sprite.text}
-		</svelte:component>
+		/>
 	{/each}
 </svg>
