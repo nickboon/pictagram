@@ -11,13 +11,13 @@
 	let className = '';
 	export { className as class };
 
-	export function init(state) {
-		text = state.text;
-		x = state.x;
-		y = state.y;
-		scale = state.scale;
-		opacity = state.opacity;
-		fontSize = state.fontSize || fontSize;
+	export function init(sprite) {
+		text = sprite.text;
+		x = sprite.x;
+		y = sprite.y;
+		scale = sprite.scale;
+		opacity = sprite.opacity;
+		fontSize = sprite.fontSize || fontSize;
 	}
 
 	export function update(state) {

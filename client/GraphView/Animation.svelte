@@ -1,20 +1,34 @@
 <script>
 	import { onMount } from 'svelte';
+	import Perspective from './perspective';
 
 	export let sprites = [];
 	export let interval = 1000; //41.6666666667; // 24 fps
 	export let background = 'white';
 	export let width = 0;
 	export let height = 0;
-	export let is3d = true;
 
 	const spriteSvgs = {};
+	const useAtmosphericPerspective = false;
+	const perspective = new Perspective({
+		vanishingPointY: height / 2,
+		vanishingPointX: width / 2,
+	});
+
+	function toScreen(state) {
+		const { x, y, scale, atmosphericAlpha } = perspective.toScreen(state);
+		const opacity = useAtmosphericPerspective
+			? state.opacity * atmosphericAlpha
+			: state.opacity;
+		return { x, y, scale, opacity };
+	}
 
 	function update() {
-		if (is3d) sprites.sort((a, b) => a.z - b.z);
+		sprites.sort((a, b) => a.z - b.z);
 		sprites.forEach((sprite) => {
-			const state = sprite.getState();
-			spriteSvgs[sprite.id].update(state);
+			const updated = sprite.getUpdated();
+			const projection = toScreen(updated);
+			spriteSvgs[sprite.id].update(projection);
 		});
 	}
 
@@ -24,8 +38,8 @@
 
 	function init() {
 		sprites.forEach((sprite) => {
-			const state = sprite.getInitState();
-			spriteSvgs[sprite.id].init(state);
+			const projection = { ...sprite, ...toScreen(sprite) };
+			spriteSvgs[sprite.id].init(projection);
 		});
 		restart();
 	}

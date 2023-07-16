@@ -2,15 +2,15 @@ export default class Perspective {
 	#fl;
 	#vpx;
 	#vpy;
-	#maxAlpha;
+	#maxOpacity;
 	#vanishingDistance;
 	#getScale = function (point) {
 		const fl = this.#fl;
 		return fl / (fl + point.z);
 	};
-	#getAtmosphericAlpha = function (z) {
+	#getAtmosphericOpacity = function (z) {
 		var range = z + this.#fl;
-		return (1 - range / this.#vanishingDistance) * this.#maxAlpha;
+		return (1 - range / this.#vanishingDistance) * this.#maxOpacity;
 	};
 
 	constructor({
@@ -18,22 +18,22 @@ export default class Perspective {
 		vanishingPointX = window.screen.width / 2,
 		vanishingPointY = window.screen.height / 2,
 		vanishingDistance = 1000,
-		maxAlpha = 1,
+		maxOpacity = 1,
 	} = {}) {
 		this.#fl = focalLength;
 		this.#vpx = vanishingPointX;
 		this.#vpy = vanishingPointY;
 		this.#vanishingDistance = vanishingDistance;
-		this.#maxAlpha = maxAlpha;
+		this.#maxOpacity = maxOpacity;
 	}
 
-	toScreen(point) {
-		const scale = this.#getScale(point);
+	toScreen(sprite) {
+		const scale = this.#getScale(sprite);
 		return {
-			x: this.#vpx + point.x * scale,
-			y: this.#vpy + point.y * scale,
+			x: this.#vpx + sprite.x * scale,
+			y: this.#vpy + sprite.y * scale,
 			scale,
-			alpha: this.#getAtmosphericAlpha(point.z),
+			opacity: this.#getAtmosphericOpacity(sprite.z) * sprite.opacity,
 		};
 	}
 
