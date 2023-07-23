@@ -3,13 +3,20 @@ import Sprite from './sprite';
 export default class TextSprite extends Sprite {
 	static get default() {
 		return {
-			size: 16,
+			fontSize: 6,
 		};
 	}
 
-	constructor({ x, y, z, opacity, text, size = TextSprite.default.size } = {}) {
+	constructor({
+		x,
+		y,
+		z,
+		opacity,
+		text,
+		fontSize = TextSprite.default.fontSize,
+	} = {}) {
 		super({ x, y, z, opacity });
-		this.size = size;
+		this.fontSize = fontSize;
 		this.text = text;
 	}
 }

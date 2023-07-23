@@ -3,7 +3,7 @@
 	import Perspective from './perspective';
 
 	export let sprites = [];
-	export let interval = 1000; //41.6666666667; // 24 fps
+	export let interval = 41.6666666667; // 24 fps
 	export let background = 'white';
 	export let width = 0;
 	export let height = 0;
@@ -26,7 +26,7 @@
 	function update() {
 		sprites.sort((a, b) => a.z - b.z);
 		sprites.forEach((sprite) => {
-			const updated = sprite.getUpdated();
+			const updated = sprite.transform();
 			const projection = toScreen(updated);
 			spriteSvgs[sprite.id].update(projection);
 		});

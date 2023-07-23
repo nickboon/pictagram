@@ -32,7 +32,7 @@
 	{x}
 	{y}
 	{opacity}
-	font-size="{fontSize}pt"
+	font-size="{fontSize}px"
 	transform="scale({scale})"
 	class={className}
 >

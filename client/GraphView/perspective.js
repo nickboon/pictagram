@@ -33,11 +33,10 @@ export default class Perspective {
 			x: this.#vpx + sprite.x * scale,
 			y: this.#vpy + sprite.y * scale,
 			scale,
-			opacity: this.#getAtmosphericOpacity(sprite.z) * sprite.opacity,
+			opacity:
+				sprite.z < -this.#fl
+					? 0
+					: this.#getAtmosphericOpacity(sprite.z) * sprite.opacity,
 		};
-	}
-
-	isBehindViewer(z) {
-		return z < -this.#fl;
 	}
 }
