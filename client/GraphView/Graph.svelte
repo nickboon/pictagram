@@ -4,9 +4,12 @@
 	import TextSprite from './textSprite';
 	import ForceDirectedGraph from './forceDirectedGraph';
 	import TalliedMap from './talliedMap';
+	import Rotation from './rotation';
 
 	export let messages = [];
 
+	const interval = 41.6666666667 * 3;
+	const sampleSize = 100;
 	const height = 200;
 	const width = 300;
 	const attraction = 0.1;
@@ -29,11 +32,11 @@
 		return sprite;
 	}
 
-	function setEdges(sprites, edgeSet) {
+	function setEdges(sprites, edgeMap) {
 		sprites.forEach((a) => {
 			sprites.forEach((b) => {
 				if (a.id !== b.id)
-					edgeSet.set(`${a.id}${edgeIdSeparator}${b.id}`, {
+					edgeMap.set(`${a.id}${edgeIdSeparator}${b.id}`, {
 						a: spriteMap.get(a.id),
 						b: spriteMap.get(b.id),
 					});
@@ -41,14 +44,17 @@
 		});
 	}
 
-	messages.forEach((message) => {
+	messages.splice(0, sampleSize).forEach((message) => {
 		const sprites = message.body.map((symbol) => toSprite(symbol));
 		setEdges(sprites, attractingEdgeMap);
 	});
 
 	const sprites = spriteMap.values;
+	const rotate = new Rotation();
+
 	sprites.forEach((sprite) => {
 		sprite.fontSize += sprite.tally;
+		sprite.addTransformation(() => rotate.y(sprite, 1));
 	});
 
 	setEdges(sprites, repellingEdgeMap);
@@ -65,4 +71,4 @@
 	fdg.distributeAboutCentre(sprites);
 </script>
 
-<Animation {width} {height} {sprites} />
+<Animation {width} {height} {sprites} {interval} />

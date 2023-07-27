@@ -4,7 +4,7 @@ export default class ForceDirectedGraph {
 	static get default() {
 		return {
 			diameter: window.innerHeight * 0.5,
-			sp,
+			attraction: 0.01,
 		};
 	}
 
@@ -32,10 +32,10 @@ export default class ForceDirectedGraph {
 		});
 	}
 
-	attract(a, b, strength = 0.001) {
-		const dx = (a.x - b.x) * strength;
-		const dy = (a.y - b.y) * strength;
-		const dz = (a.z - b.z) * strength;
+	attract(a, b, attraction = ForceDirectedGraph.default.attraction) {
+		const dx = (a.x - b.x) * attraction;
+		const dy = (a.y - b.y) * attraction;
+		const dz = (a.z - b.z) * attraction;
 		a.x -= dx;
 		a.y -= dy;
 		a.z -= dz;
