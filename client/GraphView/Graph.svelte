@@ -14,7 +14,7 @@
 	export let height = 200;
 	export let width = 300;
 	export let attraction = 0.01;
-	export let tallyMinimum = 0;
+	export let tallyMinimum = 1;
 	export let edgeOpacity = 0.4;
 	export let rotate = true;
 
@@ -62,7 +62,7 @@
 		);
 	}
 
-	messages.splice(0, sampleSize).forEach((message) => {
+	messages.slice(0, sampleSize).forEach((message) => {
 		const sprites = message.body.map((symbol) => toTextSprite(symbol));
 		setEdges(sprites, attractingEdgeMap);
 	});
@@ -84,12 +84,18 @@
 		a.addTransformation(() => fdg.curvedRepulse(a, b));
 	});
 
-	attractingEdgeMap.values.forEach((edge) => {
-		const a = spriteMap.get(edge.aId);
-		const b = spriteMap.get(edge.bId);
-		a.addTransformation(() => fdg.attract(a, b, attraction));
-		sprites.push(toLineSprite(a, b));
-	});
+	attractingEdgeMap.values
+		.filter(
+			(edge) =>
+				sprites.some((sprite) => sprite.id === edge.aId) &&
+				sprites.some((sprite) => sprite.id === edge.bId)
+		)
+		.forEach((edge) => {
+			const a = spriteMap.get(edge.aId);
+			const b = spriteMap.get(edge.bId);
+			a.addTransformation(() => fdg.attract(a, b, attraction));
+			sprites.push(toLineSprite(a, b));
+		});
 </script>
 
 <Animation {width} {height} {sprites} {interval} />
