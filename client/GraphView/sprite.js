@@ -10,7 +10,7 @@ class Transformation {
 	}
 }
 
-export default class Sprite {
+export default class SinglePointSprite {
 	#transformations = [];
 
 	constructor({ x = 0, y = 0, z = 0, opacity = 1 } = {}) {
@@ -30,6 +30,6 @@ export default class Sprite {
 
 	transform() {
 		this.#transformations.forEach((transformation) => transformation.run());
-		return this;
+		return [this];
 	}
 }

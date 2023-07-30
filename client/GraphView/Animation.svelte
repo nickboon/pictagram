@@ -15,19 +15,21 @@
 		vanishingPointX: width / 2,
 	});
 
-	function toScreen(state) {
-		const { x, y, scale, atmosphericAlpha } = perspective.toScreen(state);
-		const opacity = useAtmosphericPerspective
-			? state.opacity * atmosphericAlpha
-			: state.opacity;
-		return { x, y, scale, opacity };
+	function toScreen(states) {
+		return states.map((state) => {
+			const { x, y, scale, atmosphericAlpha } = perspective.toScreen(state);
+			const opacity = useAtmosphericPerspective
+				? state.opacity * atmosphericAlpha
+				: state.opacity;
+			return { x, y, scale, opacity };
+		});
 	}
 
 	function update() {
 		sprites.sort((a, b) => a.z - b.z);
-		sprites.forEach((sprite) => {
-			const updated = sprite.transform();
-			const projection = toScreen(updated);
+		sprites.forEach(async (sprite) => {
+			const updatedStates = sprite.transform();
+			const projection = toScreen(updatedStates);
 			spriteSvgs[sprite.id].update(projection);
 		});
 	}
@@ -37,10 +39,7 @@
 	}
 
 	function init() {
-		sprites.forEach((sprite) => {
-			const projection = { ...sprite, ...toScreen(sprite) };
-			spriteSvgs[sprite.id].init(projection);
-		});
+		sprites.forEach((sprite) => spriteSvgs[sprite.id].init(sprite));
 		restart();
 	}
 

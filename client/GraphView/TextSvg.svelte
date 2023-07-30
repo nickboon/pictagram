@@ -7,34 +7,40 @@
 	export let opacity = 1;
 	export let scale = 1;
 	export let fontSize = TextSprite.default.size;
+	export let textAnchor = undefined;
 
-	let className = '';
+	let yOffset = 0;
+	let className;
 	export { className as class };
+
+	const textAnchors = {
+		middle: 'middle',
+	};
 
 	export function init(sprite) {
 		text = sprite.text;
-		x = sprite.x;
-		y = sprite.y;
-		scale = sprite.scale;
-		opacity = sprite.opacity;
 		fontSize = sprite.fontSize || fontSize;
+		if (sprite.offset === TextSprite.offset.fromCentre) {
+			textAnchor = textAnchors.middle;
+			yOffset = fontSize / 2;
+		}
 	}
 
-	export function update(state) {
-		x = state.x;
-		y = state.y;
-		scale = state.scale;
-		opacity = state.opacity;
+	export function update(points) {
+		const point = points[0];
+		x = point.x;
+		y = point.y;
+		scale = point.scale;
+		opacity = point.opacity;
 	}
 </script>
 
 <text
-	{x}
-	{y}
 	{opacity}
 	font-size="{fontSize}px"
-	transform="scale({scale})"
+	transform="translate({x},{y + yOffset}) scale({scale})"
 	class={className}
+	text-anchor="middle"
 >
 	{text}
 </text>
