@@ -3,6 +3,7 @@
 	import Login from './LogInView/LogIn.svelte';
 	import Composition from './CompositionView/Composition.svelte';
 	import Messages from './MessagesView/Messages.svelte';
+	import Graph from './GraphView/Graph.svelte';
 	import MessageService from './messageService';
 
 	let viewed = false;
@@ -11,6 +12,8 @@
 	let isAbsolutePositioning = true;
 	let messages = [];
 	let messenger;
+
+	const isGraphOpen = window.location.hash === '#graph';
 
 	function onMessageEvent(error) {
 		if (error) return console.log(error);
@@ -33,17 +36,19 @@
 	}
 
 	function onChange(isLoginOpen) {
-		if (isLoginOpen || messenger) return;
+		if (messenger) return;
 		messenger = new MessageService(onMessageReceived, onUpdate, token);
 	}
 
 	$: onChange(isLoginOpen);
 </script>
 
-<main>
+<main class:isGraphOpen>
 	<Banner bind:viewed />
 	{#if isLoginOpen === true}
 		<Login bind:isOpen={isLoginOpen} bind:isAbsolutePositioning bind:token />
+	{:else if isGraphOpen}
+		<Graph {messages} />
 	{:else}
 		<Composition {isAbsolutePositioning} bind:viewed on:submit={onSubmit} />
 		<Messages

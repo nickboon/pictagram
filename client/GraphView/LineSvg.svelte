@@ -3,7 +3,6 @@
 	export let x2 = 0;
 	export let y1 = 0;
 	export let y2 = 0;
-	export let stroke = 'black';
 	export let width = 0.5;
 	export let opacity = undefined;
 
@@ -30,7 +29,6 @@
 	{y1}
 	{x2}
 	{y2}
-	{stroke}
 	stroke-width={width}
 	stroke-opacity={opacity}
 	class={className}

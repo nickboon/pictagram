@@ -4,7 +4,6 @@
 
 	export let sprites = [];
 	export let interval = 41.6666666667; // 24 fps
-	export let background = 'white';
 	export let width = 0;
 	export let height = 0;
 
@@ -40,17 +39,14 @@
 
 	function init() {
 		sprites.forEach((sprite) => spriteSvgs[sprite.id].init(sprite));
+		update();
 		restart();
 	}
 
 	onMount(init);
 </script>
 
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	viewBox="0 0 {width} {height}"
-	style="background-color: {background};"
->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">
 	{#each sprites as sprite, index (sprite.id)}
 		<svelte:component
 			this={sprite.type}
@@ -59,3 +55,22 @@
 		/>
 	{/each}
 </svg>
+<div />
+
+<style>
+	svg {
+		background-color: black;
+		fill: white;
+		stroke: white;
+	}
+
+	div {
+		background-color: black;
+		height: 100%;
+		left: 0;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: -10;
+	}
+</style>

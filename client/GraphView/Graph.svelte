@@ -10,11 +10,13 @@
 
 	export let messages = [];
 	export let interval = 41.6666666667 * 3;
-	export let sampleSize = 100;
 	export let height = 200;
 	export let width = 300;
+
+	export let from = 100;
+	export let to = 200;
 	export let attraction = 0.01;
-	export let tallyMinimum = 1;
+	export let minimumSymbolCount = 0;
 	export let edgeOpacity = 0.4;
 	export let rotate = true;
 
@@ -62,14 +64,19 @@
 		);
 	}
 
-	messages.slice(0, sampleSize).forEach((message) => {
-		const sprites = message.body.map((symbol) => toTextSprite(symbol));
-		setEdges(sprites, attractingEdgeMap);
-	});
+	function buildEdgesFromMessageSymbols(messages, from, to) {
+		messages.slice(from, to).forEach((message) => {
+			const sprites = message.body.map((symbol) => toTextSprite(symbol));
+			setEdges(sprites, attractingEdgeMap);
+		});
+	}
 
-	const sprites = spriteMap.values.filter(
-		(sprite) => sprite.tally > tallyMinimum
-	);
+	function filterSymbolsByCount(minimum) {
+		return spriteMap.values.filter((sprite) => sprite.tally > minimum);
+	}
+
+	buildEdgesFromMessageSymbols(messages, from, to);
+	const sprites = filterSymbolsByCount(minimumSymbolCount);
 
 	sprites.forEach((sprite) => {
 		sprite.fontSize += sprite.tally;

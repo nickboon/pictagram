@@ -44,3 +44,9 @@
 >
 	{text}
 </text>
+
+<style>
+	text {
+		stroke: none;
+	}
+</style>
