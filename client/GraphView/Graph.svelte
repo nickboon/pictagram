@@ -13,8 +13,8 @@
 	export let height = 200;
 	export let width = 300;
 
-	export let from = 100;
-	export let to = 200;
+	export let from = 0;
+	export let to = 100;
 	export let attraction = 0.01;
 	export let minimumSymbolCount = 0;
 	export let edgeOpacity = 0.4;
