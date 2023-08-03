@@ -2,7 +2,6 @@ import config from 'config';
 import messageEvents from '../../domain/messageEvents.js';
 import { auth } from './socketMiddleware.js';
 import Message from '../../domain/message.js';
-import c from 'config';
 
 export default function (io, messageStore) {
 	if (!config.get('jwtPrivateKey')) {
@@ -16,7 +15,7 @@ export default function (io, messageStore) {
 		async function update() {
 			await messageStore
 				.fetch()
-				.then((messages) => socket.emit(messageEvents.update, messages));
+				.then((messages) => io.emit(messageEvents.update, messages));
 		}
 
 		socket.on(messageEvents.messageSent, async (message, callback) => {
