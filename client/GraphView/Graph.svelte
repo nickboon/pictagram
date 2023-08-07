@@ -1,6 +1,12 @@
 <script>
 	import Animation from './Animation.svelte';
-	import MessageGraph from './messageGraph';
+	import SymbolGraph from './symbolGraph';
+	import Rotation from './rotation';
+	import TextSvg from './TextSvg.svelte';
+	import LineSvg from './LineSvg.svelte';
+	import TextSprite from './textSprite';
+	import LineSprite from './lineSprite';
+	import ForceDirectedGraph from './forceDirectedGraph';
 
 	export let messages = [];
 	export let interval = 41.6666666667 * 3;
@@ -12,18 +18,96 @@
 	export let attraction = 0.01;
 	export let minimumSymbolCount = 0;
 	export let edgeOpacity = 0.4;
-	export let rotate = true;
+	export let isRotating = true;
 
-	const messageGraph = new MessageGraph();
-	$: sprites = messageGraph.build({
+	const messageGraph = new SymbolGraph();
+	const symbolClassName = 'symbol';
+	const fdg = new ForceDirectedGraph({ diameter: height / 2 });
+	const rotateAbout = new Rotation();
+
+	function rotate(sprites) {
+		sprites.forEach((sprite) =>
+			sprite.addTransformation(() => rotateAbout.y(sprite, 1))
+		);
+	}
+
+	function toTextSprite(symbol) {
+		const sprite = new TextSprite({
+			text: symbol.text,
+			offset: TextSprite.offset.fromCentre,
+		});
+		sprite.id = symbol.text;
+		sprite.fontSize += symbol.tally;
+		sprite.class = symbolClassName;
+		sprite.type = TextSvg;
+
+		return sprite;
+	}
+
+	function toLineSprite(a, b, edgeOpacity) {
+		const sprite = new LineSprite(a, b);
+		sprite.id = SymbolGraph.toEdgeId(a.id, b.id);
+		sprite.opacity = edgeOpacity;
+		sprite.type = LineSvg;
+
+		return sprite;
+	}
+
+	function toTextSpriteMap(symbolMap) {
+		const textSpriteMap = {};
+		symbolMap.keys.forEach((key) => {
+			textSpriteMap[key] = toTextSprite(symbolMap.get(key));
+		});
+		return textSpriteMap;
+	}
+
+	function buildSprites({
 		messages,
 		from,
 		to,
 		minimumSymbolCount,
-		rotate,
+		isRotating,
 		attraction,
 		edgeOpacity,
-		height,
+	}) {
+		messageGraph
+			.setMessages(messages, from, to)
+			.setInterMessageSymbolEdges()
+			.setAllSymbolEdges()
+			.filterSymbolsByMinimumCount(minimumSymbolCount);
+
+		const textSpriteMap = toTextSpriteMap(messageGraph.symbolMap);
+		messageGraph.symbolEdgeMap.values.forEach((edge) => {
+			const a = textSpriteMap[edge.aId];
+			const b = textSpriteMap[edge.bId];
+			a.addTransformation(() => fdg.curvedRepulse(a, b));
+		});
+
+		const lineSprites = [];
+		messageGraph.interMessageSymbolEdgeMap.values.forEach((edge) => {
+			const a = textSpriteMap[edge.aId];
+			const b = textSpriteMap[edge.bId];
+			a.addTransformation(() => fdg.attract(a, b, attraction));
+			lineSprites.push(toLineSprite(a, b, edgeOpacity));
+		});
+
+		const textSprites = Object.values(textSpriteMap);
+		if (isRotating) rotate(textSprites);
+
+		const sprites = [...textSprites, ...lineSprites];
+		fdg.distributeAboutCentre(sprites);
+
+		return sprites;
+	}
+
+	$: sprites = buildSprites({
+		messages,
+		from,
+		to,
+		minimumSymbolCount,
+		isRotating,
+		attraction,
+		edgeOpacity,
 	});
 </script>
 

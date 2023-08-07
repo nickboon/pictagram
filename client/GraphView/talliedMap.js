@@ -17,4 +17,14 @@ export default class TalliedMap {
 	get values() {
 		return [...this.#map.values()];
 	}
+
+	get keys() {
+		return [...this.#map.keys()];
+	}
+
+	filter(predicate) {
+		this.#map.forEach((value, key) => {
+			if (!predicate(key, value)) this.#map.delete(key);
+		});
+	}
 }
