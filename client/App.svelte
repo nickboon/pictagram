@@ -8,6 +8,7 @@
 
 	let viewed = false;
 	let isLoginOpen = true;
+	let useRegisteredUser = true;
 	let token = false;
 	let isAbsolutePositioning = true;
 	let messages = [];
@@ -35,18 +36,24 @@
 		messages = [recievedMessage, ...messages];
 	}
 
-	function onChange(isLoginOpen) {
+	function onChange(useRegisteredUser, token) {
 		if (messenger) return;
-		messenger = new MessageService(onMessageReceived, onUpdate, token);
+		if ((useRegisteredUser && token) || !useRegisteredUser)
+			messenger = new MessageService(onMessageReceived, onUpdate, token);
 	}
 
-	$: onChange(isLoginOpen);
+	$: onChange(useRegisteredUser, token);
 </script>
 
 <main class:isGraphOpen>
 	<Banner bind:viewed />
 	{#if isLoginOpen === true}
-		<Login bind:isOpen={isLoginOpen} bind:isAbsolutePositioning bind:token />
+		<Login
+			bind:isOpen={isLoginOpen}
+			bind:isAbsolutePositioning
+			bind:useRegisteredUser
+			bind:token
+		/>
 	{:else if isGraphOpen}
 		<Graph {messages} />
 	{:else}

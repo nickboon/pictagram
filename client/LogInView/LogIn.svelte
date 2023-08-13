@@ -10,12 +10,12 @@
 	import AgreeTerms from './Terms.svelte';
 
 	export let isOpen = true;
+	export let useRegisteredUser = true;
 	export let token = false;
 	export let isAbsolutePositioning = true;
 
 	let isTermsChecked = false;
 
-	let isRegistered = true;
 	let username = '';
 	let password = '';
 	let isUsernameValid = false;
@@ -28,7 +28,7 @@
 	}
 
 	async function onSubmit() {
-		if (!isRegistered) {
+		if (!useRegisteredUser) {
 			isOpen = false;
 			return;
 		}
@@ -59,8 +59,8 @@
 	$: onChange(token);
 
 	$: isSubmitDisabled =
-		(isRegistered && (!isUsernameValid || !isPasswordValid)) ||
-		(!isRegistered && !isTermsChecked);
+		(useRegisteredUser && (!isUsernameValid || !isPasswordValid)) ||
+		(!useRegisteredUser && !isTermsChecked);
 </script>
 
 {#if !isRegistrationOpen}
@@ -68,14 +68,18 @@
 		<h2 class="symbol">⚙︎</h2>
 		<section>
 			<h3>Authenticate as:</h3>
-			<Radio a={'Registered User'} b={'Anonymous'} bind:is={isRegistered} />
+			<Radio
+				a={'Registered User'}
+				b={'Anonymous'}
+				bind:is={useRegisteredUser}
+			/>
 			<p>
 				or <Button type="button" on:click={openRegistration}>
 					<em>Sign Up</em>
 				</Button>.
 			</p>
 		</section>
-		{#if isRegistered}
+		{#if useRegisteredUser}
 			<section>
 				<Username bind:value={username} bind:isValid={isUsernameValid} />
 				<Password bind:value={password} bind:isValid={isPasswordValid} />
@@ -101,7 +105,7 @@
 				</li>
 			</ul>
 		</section>
-		{#if !isRegistered}
+		{#if !useRegisteredUser}
 			<AgreeTerms bind:isChecked={isTermsChecked} />
 		{/if}
 	</Submit>
