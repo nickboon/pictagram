@@ -12,6 +12,7 @@ export default class TextSprite extends SinglePointSprite {
 		return {
 			fontSize: 6,
 			offset: TextSprite.offset.none,
+			fill: 'black',
 		};
 	}
 
@@ -23,10 +24,12 @@ export default class TextSprite extends SinglePointSprite {
 		text,
 		fontSize = TextSprite.default.fontSize,
 		offset = TextSprite.default.offset,
+		fill = TextSprite.default.fill,
 	} = {}) {
 		super({ x, y, z, opacity });
 		this.fontSize = fontSize;
 		this.text = text;
 		this.offset = offset;
+		this.fill = fill;
 	}
 }

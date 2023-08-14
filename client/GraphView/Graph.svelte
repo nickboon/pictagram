@@ -1,6 +1,7 @@
 <script>
 	import Animation from './Animation.svelte';
-	import SymbolGraph from './symbolGraph';
+	import ColouredSymbolGraph from './colouredSymbolGraph';
+
 	import Rotation from './rotation';
 	import TextSvg from './TextSvg.svelte';
 	import LineSvg from './LineSvg.svelte';
@@ -19,8 +20,9 @@
 	export let minimumSymbolCount = 0;
 	export let edgeOpacity = 0.4;
 	export let isRotating = true;
+	export let brightenIncrement = 0.5;
 
-	const messageGraph = new SymbolGraph();
+	const symbolGraph = new ColouredSymbolGraph(brightenIncrement);
 	const symbolClassName = 'symbol';
 	const fdg = new ForceDirectedGraph({ diameter: height / 2 });
 	const rotateAbout = new Rotation();
@@ -40,13 +42,14 @@
 		sprite.fontSize += symbol.tally;
 		sprite.class = symbolClassName;
 		sprite.type = TextSvg;
+		sprite.fill = symbolGraph.getColour(sprite.id);
 
 		return sprite;
 	}
 
 	function toLineSprite(a, b, edgeOpacity) {
 		const sprite = new LineSprite(a, b);
-		sprite.id = SymbolGraph.toEdgeId(a.id, b.id);
+		sprite.id = ColouredSymbolGraph.toEdgeId(a.id, b.id);
 		sprite.opacity = edgeOpacity;
 		sprite.type = LineSvg;
 
@@ -70,21 +73,23 @@
 		attraction,
 		edgeOpacity,
 	}) {
-		messageGraph
+		symbolGraph
 			.setMessages(messages, from, to)
 			.setInterMessageSymbolEdges()
 			.setAllSymbolEdges()
 			.filterSymbolsByMinimumCount(minimumSymbolCount);
 
-		const textSpriteMap = toTextSpriteMap(messageGraph.symbolMap);
-		messageGraph.symbolEdgeMap.values.forEach((edge) => {
+		symbolGraph.setSpriteColours();
+
+		const textSpriteMap = toTextSpriteMap(symbolGraph.symbolMap);
+		symbolGraph.symbolEdgeMap.values.forEach((edge) => {
 			const a = textSpriteMap[edge.aId];
 			const b = textSpriteMap[edge.bId];
 			a.addTransformation(() => fdg.curvedRepulse(a, b));
 		});
 
 		const lineSprites = [];
-		messageGraph.interMessageSymbolEdgeMap.values.forEach((edge) => {
+		symbolGraph.interMessageSymbolEdgeMap.values.forEach((edge) => {
 			const a = textSpriteMap[edge.aId];
 			const b = textSpriteMap[edge.bId];
 			a.addTransformation(() => fdg.attract(a, b, attraction));

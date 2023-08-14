@@ -8,6 +8,7 @@
 	export let scale = 1;
 	export let fontSize = TextSprite.default.size;
 	export let textAnchor = undefined;
+	export let fill;
 
 	let yOffset = 0;
 	let className;
@@ -20,6 +21,7 @@
 	export function init(sprite) {
 		text = sprite.text;
 		fontSize = sprite.fontSize || fontSize;
+		fill = sprite.fill;
 		if (sprite.offset === TextSprite.offset.fromCentre) {
 			textAnchor = textAnchors.middle;
 			yOffset = fontSize / 2;
@@ -36,6 +38,7 @@
 </script>
 
 <text
+	{fill}
 	{opacity}
 	font-size="{fontSize}px"
 	transform="translate({x},{y + yOffset}) scale({scale})"

@@ -14,6 +14,10 @@ export default class TalliedMap {
 		return this.#map.get(key);
 	}
 
+	has(key) {
+		return this.#map.has(key);
+	}
+
 	get values() {
 		return [...this.#map.values()];
 	}
