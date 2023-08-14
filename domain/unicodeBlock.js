@@ -15,7 +15,7 @@ export const blocks = [
 	},
 	{
 		name: 'Dingbats',
-		codes: toArray(0x2701, 0x27bf),
+		codes: [...toArray(0x2701, 0x2775), ...toArray(0x2794, 0x27bf)],
 	},
 	{
 		name: 'Domino Tiles',
