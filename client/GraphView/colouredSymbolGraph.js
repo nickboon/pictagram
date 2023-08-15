@@ -4,9 +4,10 @@ import SymbolGraph from './symbolGraph';
 export default class ColouredSymbolGraph extends SymbolGraph {
 	#colourMap = new Map();
 
-	constructor(brightenIncrement = 1) {
+	constructor(brighten = 1, darken = 1) {
 		super();
-		this.brightenIncrement = brightenIncrement;
+		this.brightenIncrement = brighten;
+		this.darkenIncrement = darken;
 	}
 
 	setSpriteColours() {
@@ -26,6 +27,6 @@ export default class ColouredSymbolGraph extends SymbolGraph {
 		const colours = [...authorSet].map((author) => this.#colourMap.get(author));
 		return chroma
 			.average(colours, 'hsl')
-			.brighten(authorSet.size * this.brightenIncrement);
+			.brighten(authorSet.size * this.brightenIncrement - this.darkenIncrement);
 	}
 }

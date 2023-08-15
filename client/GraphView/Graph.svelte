@@ -20,9 +20,9 @@
 	export let minimumSymbolCount = 0;
 	export let edgeOpacity = 0.4;
 	export let isRotating = true;
-	export let brightenIncrement = 0.5;
+	export let brighten = 0.6;
 
-	const symbolGraph = new ColouredSymbolGraph(brightenIncrement);
+	const symbolGraph = new ColouredSymbolGraph(brighten);
 	const symbolClassName = 'symbol';
 	const fdg = new ForceDirectedGraph({ diameter: height / 2 });
 	const rotateAbout = new Rotation();
