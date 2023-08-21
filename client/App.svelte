@@ -32,14 +32,10 @@
 		messages = update;
 	}
 
-	function onMessageReceived(recievedMessage) {
-		messages = [recievedMessage, ...messages];
-	}
-
 	function onChange(useRegisteredUser, token) {
 		if (messenger) return;
 		if ((useRegisteredUser && token) || !useRegisteredUser)
-			messenger = new MessageService(onMessageReceived, onUpdate, token);
+			messenger = new MessageService(onUpdate, token);
 	}
 
 	$: onChange(useRegisteredUser, token);

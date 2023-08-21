@@ -27,6 +27,7 @@
 	function update() {
 		sprites.sort((a, b) => a.z - b.z);
 		sprites.forEach(async (sprite) => {
+			spriteSvgs[sprite.id].init(sprite); // need to initialize sprites introduced since load.
 			const updatedStates = sprite.transform();
 			const projection = toScreen(updatedStates);
 			spriteSvgs[sprite.id].update(projection);
@@ -38,7 +39,6 @@
 	}
 
 	function init() {
-		sprites.forEach((sprite) => spriteSvgs[sprite.id].init(sprite));
 		update();
 		restart();
 	}

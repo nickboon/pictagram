@@ -17,7 +17,7 @@ export default class SymbolGraph {
 
 	setMessages(messages, from = 0, to = 100) {
 		this.#messages = messages.slice(from, to);
-		this.#messages.flat().forEach((message) => {
+		this.#messages.forEach((message) => {
 			message.authors.forEach((author) => this.#authorSet.add(author));
 			message.body.forEach((symbol) => {
 				this.#symbolMap.set(symbol.text, symbol);

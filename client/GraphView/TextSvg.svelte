@@ -8,7 +8,7 @@
 	export let scale = 1;
 	export let fontSize = TextSprite.default.size;
 	export let textAnchor = undefined;
-	export let fill;
+	export let fill = 'black';
 
 	let yOffset = 0;
 	let className;
