@@ -73,11 +73,6 @@
 		const newMessage = event.detail;
 		dispatch('submit', newMessage);
 
-		console.log(
-			'Message.onSubmit id isRecycled',
-			message._id,
-			newMessage.isRecycled
-		);
 		const action = newMessage.isRecycled
 			? Consts.reactions.recycled
 			: Consts.reactions.repliedTo;

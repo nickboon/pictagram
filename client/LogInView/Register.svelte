@@ -32,7 +32,7 @@
 		} catch (error) {
 			responseError = error.message;
 			if (data.errors) {
-				console.log(data.errors);
+				console.error(data.errors);
 			}
 		}
 	}

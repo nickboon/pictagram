@@ -24,7 +24,7 @@ export default function (io, messageStore) {
 				await messageStore.add(message).then(update);
 				callback();
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 			}
 		});
 
@@ -64,7 +64,7 @@ export default function (io, messageStore) {
 						return;
 					}
 				} catch (error) {
-					console.log(error);
+					console.error(error);
 				}
 			}
 		);
@@ -72,7 +72,7 @@ export default function (io, messageStore) {
 		try {
 			await update();
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	});
 }
