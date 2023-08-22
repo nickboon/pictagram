@@ -8,16 +8,19 @@
 
 	let viewed = false;
 	let isLoginOpen = true;
-	let useRegisteredUser = true;
-	let token = false;
 	let isAbsolutePositioning = true;
 	let messages = [];
+	let isGraphOpen;
 	let messenger;
 
-	const isGraphOpen = window.location.hash === '#graph';
+	function routeToHash() {
+		isGraphOpen = window.location.hash === '#graph';
+		isLoginOpen = !isGraphOpen;
+		if (isGraphOpen) messenger = new MessageService(onUpdate, false);
+	}
 
 	function onMessageEvent(error) {
-		if (error) return console.log(error);
+		if (error) return console.error(error);
 	}
 
 	function onSubmit(event) {
@@ -32,24 +35,18 @@
 		messages = update;
 	}
 
-	function onChange(useRegisteredUser, token) {
-		if (messenger) return;
-		if ((useRegisteredUser && token) || !useRegisteredUser)
-			messenger = new MessageService(onUpdate, token);
+	function onLogin(event) {
+		messenger = new MessageService(onUpdate, event.detail);
+		isLoginOpen = false;
 	}
 
-	$: onChange(useRegisteredUser, token);
+	routeToHash();
 </script>
 
-<main class:isGraphOpen>
+<main>
 	<Banner bind:viewed />
 	{#if isLoginOpen === true}
-		<Login
-			bind:isOpen={isLoginOpen}
-			bind:isAbsolutePositioning
-			bind:useRegisteredUser
-			bind:token
-		/>
+		<Login bind:isAbsolutePositioning on:login={onLogin} />
 	{:else if isGraphOpen}
 		<Graph {messages} />
 	{:else}

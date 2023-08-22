@@ -1,4 +1,5 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import Register from './Register.svelte';
 	import Button from '../Shared/Button.svelte';
 	import Symbol from '../Message/Symbol.svelte';
@@ -9,13 +10,13 @@
 	import ErrorMessage from '../Shared/ErrorMessage.svelte';
 	import AgreeTerms from './Terms.svelte';
 
-	export let isOpen = true;
-	export let useRegisteredUser = true;
-	export let token = false;
 	export let isAbsolutePositioning = true;
 
-	let isTermsChecked = false;
+	const dispatch = createEventDispatcher();
 
+	let useRegisteredUser = true;
+	let token = false;
+	let isTermsChecked = false;
 	let username = '';
 	let password = '';
 	let isUsernameValid = false;
@@ -27,12 +28,7 @@
 		isRegistrationOpen = true;
 	}
 
-	async function onSubmit() {
-		if (!useRegisteredUser) {
-			isOpen = false;
-			return;
-		}
-
+	async function setToken() {
 		try {
 			const response = await fetch('/login', {
 				method: 'POST',
@@ -46,17 +42,16 @@
 			if (!response.ok) throw new Error('Login failed.');
 			token = response.headers.get('x-auth-token');
 			responseError = '';
-			isOpen = false;
 		} catch (error) {
 			responseError = error.message;
 		}
+		dispatch('onLogin', token);
 	}
 
-	function onChange(token) {
-		if (token) isOpen = false;
+	async function onSubmit() {
+		if (useRegisteredUser) await setToken();
+		dispatch('login', token);
 	}
-
-	$: onChange(token);
 
 	$: isSubmitDisabled =
 		(useRegisteredUser && (!isUsernameValid || !isPasswordValid)) ||
