@@ -20,6 +20,8 @@ export default class ColouredSymbolGraph extends SymbolGraph {
 		[...super.authorSet].forEach((author, index) =>
 			this.#colourMap.set(author, colours[index])
 		);
+
+		console.log('colourMap: ', this.#colourMap);
 	}
 
 	getColour(spriteId) {
