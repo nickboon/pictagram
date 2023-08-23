@@ -118,4 +118,12 @@
 	});
 </script>
 
-<Animation {width} {height} {sprites} {interval} />
+<div>
+	<Animation {width} {height} {sprites} {interval} />
+</div>
+
+<style>
+	div {
+		cursor: none;
+	}
+</style>
