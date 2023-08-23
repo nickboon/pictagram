@@ -12,6 +12,12 @@
 	"engines": {
 		"node": "16.16.0"
 	},
+	"keywords": [
+		"pictagram",
+		"bcps",
+		"network",
+		"exhibition"
+	],
 	"author": "Nick Boon",
 	"license": "ISC",
 	"dependencies": {
