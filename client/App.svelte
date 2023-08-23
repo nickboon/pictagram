@@ -44,7 +44,9 @@
 </script>
 
 <main>
-	<Banner bind:viewed />
+	{#if !isGraphOpen}
+		<Banner bind:viewed />
+	{/if}
 	{#if isLoginOpen === true}
 		<Login bind:isAbsolutePositioning on:login={onLogin} />
 	{:else if isGraphOpen}
@@ -67,6 +69,49 @@
 		max-width: 240px;
 		margin: 0 auto;
 		height: 100%;
+	}
+
+	Christopher {
+		color: #ff0000;
+	}
+	Nick {
+		color: #218f00;
+	}
+	Anon {
+		color: #0077dd;
+	}
+	Bill {
+		color: #0070df;
+	}
+	a9 {
+		color: #006ae1;
+	}
+	a6 {
+		color: #0065e3;
+	}
+	a5 {
+		color: #005ee5;
+	}
+	a4 {
+		color: #0057e7;
+	}
+	a3 {
+		color: #004fea;
+	}
+	a2 {
+		color: #0047ec;
+	}
+	a1 {
+		color: #003eef;
+	}
+	a8 {
+		color: #0032f2;
+	}
+	a7 {
+		color: #0024f6;
+	}
+	Alice {
+		color: #0000ff;
 	}
 
 	@media (min-width: 640px) {
