@@ -19,7 +19,6 @@
 	export let attraction = 0.02;
 	export let minimumSymbolCount = 0;
 	export let edgeOpacity = 0.4;
-	export let isRotating = true;
 	export let brighten = 0.6;
 
 	const symbolGraph = new ColouredSymbolGraph(brighten);
@@ -30,7 +29,7 @@
 	function transformAll(sprites) {
 		sprites.forEach((sprite) => {
 			sprite.addTransformation(() => rotateAbout.y(sprite, 1));
-			sprite.addTransformation(() => fdg.attractToCenter(sprite, attraction));
+			// sprite.addTransformation(() => fdg.attractToCenter(sprite, attraction));
 		});
 	}
 
@@ -70,7 +69,6 @@
 		from,
 		to,
 		minimumSymbolCount,
-		isRotating,
 		attraction,
 		edgeOpacity,
 	}) {
@@ -112,7 +110,6 @@
 		from,
 		to,
 		minimumSymbolCount,
-		isRotating,
 		attraction,
 		edgeOpacity,
 	});
