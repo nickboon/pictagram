@@ -75,6 +75,7 @@
 		edgeOpacity,
 	}) {
 		symbolGraph
+			.clear()
 			.setMessages(messages, from, to)
 			.setInterMessageSymbolEdges()
 			.setAllSymbolEdges()

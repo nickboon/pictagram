@@ -26,6 +26,10 @@ export default class TalliedMap {
 		return [...this.#map.keys()];
 	}
 
+	clear() {
+		this.#map.clear();
+	}
+
 	filter(predicate) {
 		this.#map.forEach((value, key) => {
 			if (!predicate(key, value)) this.#map.delete(key);

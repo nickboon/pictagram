@@ -11,22 +11,6 @@ export default class SymbolGraph {
 	#authorMap = new SymbolAuthorMap();
 	#authorSet = new Set();
 
-	static toEdgeId(a, b) {
-		return `${a}${SymbolGraph.#edgeIdSeparator}${b}`;
-	}
-
-	setMessages(messages, from = 0, to = 100) {
-		this.#messages = messages.slice(from, to);
-		this.#messages.forEach((message) => {
-			message.authors.forEach((author) => this.#authorSet.add(author));
-			message.body.forEach((symbol) => {
-				this.#symbolMap.set(symbol.text, symbol);
-				this.#authorMap.set(symbol.text, message.authors);
-			});
-		});
-		return this;
-	}
-
 	get symbolMap() {
 		return this.#symbolMap;
 	}
@@ -45,6 +29,29 @@ export default class SymbolGraph {
 
 	get authorSet() {
 		return this.#authorSet;
+	}
+
+	static toEdgeId(a, b) {
+		return `${a}${SymbolGraph.#edgeIdSeparator}${b}`;
+	}
+
+	clear() {
+		this.#allSymbolEdgeMap.clear();
+		this.#interMessageSymbolEdgeMap.clear();
+		this.#symbolMap.clear();
+		return this;
+	}
+
+	setMessages(messages, from = 0, to = 100) {
+		this.#messages = messages.slice(from, to);
+		this.#messages.forEach((message) => {
+			message.authors.forEach((author) => this.#authorSet.add(author));
+			message.body.forEach((symbol) => {
+				this.#symbolMap.set(symbol.text, symbol);
+				this.#authorMap.set(symbol.text, message.authors);
+			});
+		});
+		return this;
 	}
 
 	setInterMessageSymbolEdges() {
