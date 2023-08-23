@@ -16,7 +16,7 @@
 
 	export let from = 0;
 	export let to = 100;
-	export let attraction = 0.01;
+	export let attraction = 0.02;
 	export let minimumSymbolCount = 0;
 	export let edgeOpacity = 0.4;
 	export let isRotating = true;
@@ -27,10 +27,11 @@
 	const fdg = new ForceDirectedGraph({ diameter: height / 2 });
 	const rotateAbout = new Rotation();
 
-	function rotate(sprites) {
-		sprites.forEach((sprite) =>
-			sprite.addTransformation(() => rotateAbout.y(sprite, 1))
-		);
+	function transformAll(sprites) {
+		sprites.forEach((sprite) => {
+			sprite.addTransformation(() => rotateAbout.y(sprite, 1));
+			sprite.addTransformation(() => fdg.attractToCenter(sprite, attraction));
+		});
 	}
 
 	function toTextSprite(symbol) {
@@ -97,7 +98,7 @@
 		});
 
 		const textSprites = Object.values(textSpriteMap);
-		if (isRotating) rotate(textSprites);
+		transformAll(textSprites);
 
 		const sprites = [...textSprites, ...lineSprites];
 		fdg.distributeAboutCentre(sprites);

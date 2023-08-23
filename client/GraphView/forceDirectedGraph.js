@@ -44,6 +44,12 @@ export default class ForceDirectedGraph {
 		b.z += dz;
 	}
 
+	attractToCenter(a, attraction = ForceDirectedGraph.default.attraction) {
+		a.x -= a.x * attraction;
+		a.y -= a.y * attraction;
+		a.z -= a.z * attraction;
+	}
+
 	curvedRepulse(a, b) {
 		const dx = a.x - b.x;
 		const dy = a.y - b.y;
