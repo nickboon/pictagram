@@ -43,24 +43,24 @@
 	routeToHash();
 </script>
 
-<main>
-	{#if !isGraphOpen}
+{#if isGraphOpen}
+	<Graph {messages} />
+{:else}
+	<main>
 		<Banner bind:viewed />
-	{/if}
-	{#if isLoginOpen === true}
-		<Login bind:isAbsolutePositioning on:login={onLogin} />
-	{:else if isGraphOpen}
-		<Graph {messages} />
-	{:else}
-		<Composition {isAbsolutePositioning} bind:viewed on:submit={onSubmit} />
-		<Messages
-			{isAbsolutePositioning}
-			{messages}
-			on:react={onReact}
-			on:submit={onSubmit}
-		/>
-	{/if}
-</main>
+		{#if isLoginOpen === true}
+			<Login bind:isAbsolutePositioning on:login={onLogin} />
+		{:else}
+			<Composition {isAbsolutePositioning} bind:viewed on:submit={onSubmit} />
+			<Messages
+				{isAbsolutePositioning}
+				{messages}
+				on:react={onReact}
+				on:submit={onSubmit}
+			/>
+		{/if}
+	</main>
+{/if}
 
 <style>
 	main {
