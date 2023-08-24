@@ -11,8 +11,8 @@
 
 	export let messages = [];
 	export let interval = 41.6666666667 * 3;
-	export let height = window.screen.height * 0.9; // golden ratio smaller // 200
-	export let width = window.screen.width * 0.9;
+	export let width = document.documentElement.clientWidth;
+	export let height = document.documentElement.clientHeight;
 
 	export let from = 0;
 	export let to = 100;
