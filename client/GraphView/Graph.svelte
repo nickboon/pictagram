@@ -115,12 +115,4 @@
 	});
 </script>
 
-<div>
-	<Animation {width} {height} {sprites} {interval} />
-</div>
-
-<style>
-	div {
-		cursor: none;
-	}
-</style>
+<Animation {width} {height} {sprites} {interval} />
