@@ -1,7 +1,7 @@
 <script>
+	import domtoimage from 'dom-to-image';
 	import MessageHeader from '../Message/MessageHeader.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
-	import Png from './png';
 
 	export let message;
 
@@ -13,7 +13,15 @@
 			return;
 		}
 
-		Png.download(message, section);
+		section.querySelector('.reply-to')?.remove();
+
+		domtoimage.toPng(section).then((dataUrl) => {
+			const link = document.createElement('a');
+			link.download = `${message._id}.png`;
+			link.href = dataUrl;
+			link.click();
+			message = false;
+		});
 	}
 
 	$: update(message);

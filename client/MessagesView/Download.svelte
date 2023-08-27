@@ -1,16 +1,24 @@
 <script>
 	import { onMount } from 'svelte';
+	import domtoimage from 'dom-to-image';
 	import MessageHeader from '../Message/MessageHeader.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
 	import Symbol from '../Message/Symbol.svelte';
-	import Png from './png';
 
 	export let message;
 
 	let section;
 
 	onMount(() => {
-		Png.download(message, section);
+		section.querySelector('.reply-to')?.remove();
+
+		domtoimage.toPng(section).then((dataUrl) => {
+			const link = document.createElement('a');
+			link.download = `${message._id}.png`;
+			link.href = dataUrl;
+			link.click();
+			message = false;
+		});
 	});
 </script>
 
