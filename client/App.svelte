@@ -5,18 +5,22 @@
 	import Messages from './MessagesView/Messages.svelte';
 	import Graph from './GraphView/Graph.svelte';
 	import MessageService from './messageService';
+	import Latest from './MessagesView/Latest.svelte';
 
 	let viewed = false;
 	let isLoginOpen = true;
 	let isAbsolutePositioning = true;
 	let messages = [];
-	let isGraphOpen;
+	let isGraphRoute;
+	let isLatestRoute;
 	let messenger;
 
 	function routeToHash() {
-		isGraphOpen = window.location.hash === '#graph';
-		isLoginOpen = !isGraphOpen;
-		if (isGraphOpen) messenger = new MessageService(onUpdate, false);
+		isGraphRoute = window.location.hash === '#graph';
+		isLatestRoute = window.location.hash === '#latest';
+		isLoginOpen = !isGraphRoute && !isLatestRoute;
+		if (isGraphRoute || isLatestRoute)
+			messenger = new MessageService(onUpdate, false);
 	}
 
 	function onMessageEvent(error) {
@@ -43,8 +47,10 @@
 	routeToHash();
 </script>
 
-{#if isGraphOpen}
+{#if isGraphRoute}
 	<Graph {messages} />
+{:else if isLatestRoute}
+	<Latest message={messages[0]} />
 {:else}
 	<main>
 		<Banner bind:viewed />

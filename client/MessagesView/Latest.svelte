@@ -1,23 +1,25 @@
 <script>
-	import { onMount } from 'svelte';
 	import MessageHeader from '../Message/MessageHeader.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
-	import Symbol from '../Message/Symbol.svelte';
 	import Png from './png';
 
 	export let message;
 
 	let section;
 
-	onMount(() => {
+	function update(message) {
+		if (!message) {
+			console.log(404);
+			return;
+		}
+
 		Png.download(message, section);
-	});
+	}
+
+	$: update(message);
 </script>
 
 <div>
-	<h2>
-		<Symbol>📸︎</Symbol>
-	</h2>
 	<section bind:this={section}>
 		<article>
 			<MessageHeader {message} />
@@ -39,11 +41,6 @@
 	section {
 		padding: 1rem;
 		text-align: left;
-	}
-
-	h2 {
-		animation: blinker 1s linear infinite;
-		text-align: center;
 	}
 
 	@keyframes blinker {
