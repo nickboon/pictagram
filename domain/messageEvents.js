@@ -10,4 +10,12 @@ export default class {
 	static get reactionSent() {
 		return 'reactionSent';
 	}
+
+	static get imageSent() {
+		return 'imageSent';
+	}
+
+	static get printImage() {
+		return 'printImage';
+	}
 }

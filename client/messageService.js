@@ -23,4 +23,12 @@ export default class MessageService {
 			reactionHandler
 		);
 	}
+
+	sendImage(image, imageSentHandler) {
+		MessageService.socket.emit(
+			messageEvents.imageSent,
+			image,
+			imageSentHandler
+		);
+	}
 }

@@ -44,13 +44,17 @@
 		isLoginOpen = false;
 	}
 
+	function onLatest(event) {
+		messenger.sendImage(event.detail, onMessageEvent);
+	}
+
 	routeToHash();
 </script>
 
 {#if isGraphRoute}
 	<Graph {messages} />
 {:else if isLatestRoute}
-	<Latest message={messages[0]} />
+	<Latest message={messages[0]} on:latest={onLatest} />
 {:else}
 	<main>
 		<Banner bind:viewed />

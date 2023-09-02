@@ -69,6 +69,15 @@ export default function (io, messageStore) {
 			}
 		);
 
+		socket.on(messageEvents.imageSent, async (image, callback) => {
+			try {
+				io.of('/printers').emit(messageEvents.printImage, image);
+				callback();
+			} catch (error) {
+				console.error(error);
+			}
+		});
+
 		try {
 			await update();
 		} catch (error) {

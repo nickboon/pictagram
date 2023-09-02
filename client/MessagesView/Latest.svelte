@@ -1,26 +1,24 @@
 <script>
-	import domtoimage from 'dom-to-image';
+	import { createEventDispatcher } from 'svelte';
+	import domToImage from 'dom-to-image';
 	import MessageHeader from '../Message/MessageHeader.svelte';
 	import MessageBody from '../Message/MessageBody.svelte';
 
 	export let message;
 
+	const dispatch = createEventDispatcher();
 	let section;
 
 	function update(message) {
-		if (!message) {
-			console.log(404);
-			return;
-		}
+		if (!message) return;
 
 		section.querySelector('.reply-to')?.remove();
 
-		domtoimage.toPng(section).then((dataUrl) => {
-			const link = document.createElement('a');
-			link.download = `${message._id}.png`;
-			link.href = dataUrl;
-			link.click();
-			message = false;
+		domToImage.toBlob(section).then((blob) => {
+			dispatch('latest', {
+				id: message._id,
+				blob,
+			});
 		});
 	}
 
