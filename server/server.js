@@ -17,7 +17,6 @@ startupDb();
 startupMessaging(io, messageStore);
 startupStatic(app);
 startupRoutes(app, messageStore);
-
 startupProduction(app);
 
 const port = process.env.PORT || 3000;
