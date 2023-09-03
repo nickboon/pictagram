@@ -28,7 +28,7 @@
 <div>
 	<section bind:this={section}>
 		<article>
-			<MessageHeader {message} />
+			<MessageHeader {message} includeReplyThumbnail={false} />
 			<MessageBody {message} />
 		</article>
 	</section>

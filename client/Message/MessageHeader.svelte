@@ -9,6 +9,7 @@
 	}
 
 	export let message = new Message();
+	export let includeReplyThumbnail = true;
 </script>
 
 <header>
@@ -21,9 +22,11 @@
 				authors={formatAuthors(message.replyTo.authors)}
 			/>
 		</span>
-		<div class="reply-to">
-			<MessageBody message={message.replyTo} />
-		</div>
+		{#if includeReplyThumbnail}
+			<div class="reply-to">
+				<MessageBody message={message.replyTo} />
+			</div>
+		{/if}
 	{/if}
 </header>
 
