@@ -84,10 +84,6 @@
 			</section>
 		{/if}
 		<section>
-			<h3>Select character positioning:</h3>
-			<Radio a={'Absolute'} b={'Relative'} bind:is={isAbsolutePositioning} />
-		</section>
-		<section>
 			<h3>Instructions:</h3>
 			<ul>
 				<li>Click on a character to start composing a new post,</li>
