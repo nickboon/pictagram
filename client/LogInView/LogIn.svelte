@@ -10,7 +10,7 @@
 	import ErrorMessage from '../Shared/ErrorMessage.svelte';
 	import AgreeTerms from './Terms.svelte';
 
-	export let isAbsolutePositioning = true;
+	export const isAbsolutePositioning = true; // keeping in case of reinstatment
 
 	const dispatch = createEventDispatcher();
 
@@ -29,28 +29,31 @@
 	}
 
 	async function setToken() {
-		try {
-			const response = await fetch('/login', {
-				method: 'POST',
-				body: JSON.stringify({
-					username,
-					password,
-				}),
-				headers: { 'Content-Type': 'application/json' },
-			});
-			if (response.status === 400) throw new Error('Invalid credentials.');
-			if (!response.ok) throw new Error('Login failed.');
-			token = response.headers.get('x-auth-token');
-			responseError = '';
-		} catch (error) {
-			responseError = error.message;
-		}
-		dispatch('onLogin', token);
+		const response = await fetch('/login', {
+			method: 'POST',
+			body: JSON.stringify({
+				username,
+				password,
+			}),
+			headers: { 'Content-Type': 'application/json' },
+		});
+		if (response.status === 400) throw new Error('Invalid credentials.');
+		if (!response.ok) throw new Error('Login failed.');
+		token = response.headers.get('x-auth-token');
+		responseError = '';
 	}
 
 	async function onSubmit() {
-		if (useRegisteredUser) await setToken();
-		dispatch('login', token);
+		if (useRegisteredUser)
+			try {
+				await setToken();
+				dispatch('login', token);
+			} catch (error) {
+				responseError = error.message;
+			}
+		else {
+			dispatch('login', false);
+		}
 	}
 
 	$: isSubmitDisabled =
