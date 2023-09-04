@@ -56,6 +56,11 @@
 		}
 	}
 
+	function onChange(username, password) {
+		responseError = '';
+	}
+
+	$: onChange(username, password);
 	$: isSubmitDisabled =
 		(useRegisteredUser && (!isUsernameValid || !isPasswordValid)) ||
 		(!useRegisteredUser && !isTermsChecked);
