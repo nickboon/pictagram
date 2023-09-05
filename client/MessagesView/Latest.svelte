@@ -47,6 +47,7 @@
 	section {
 		padding: 1rem;
 		text-align: left;
+		width: fit-content;
 	}
 
 	@keyframes blinker {
