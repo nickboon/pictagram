@@ -11,8 +11,9 @@
 
 	export let messages = [];
 	export let interval = 41.6666666667 * 3;
-	export let width = document.documentElement.clientWidth;
-	export let height = document.documentElement.clientHeight;
+	export let cover = 0.8;
+	export let width = document.documentElement.clientWidth * cover;
+	export let height = document.documentElement.clientHeight * cover;
 
 	export let from = 0;
 	export let to = 100;
@@ -21,9 +22,24 @@
 	export let edgeOpacity = 0.4;
 	export let brighten = 0.6;
 
+	let fdg = new ForceDirectedGraph({ diameter: height / 2 });
+	function restart() {
+		width = document.documentElement.clientWidth * cover;
+		height = document.documentElement.clientHeight * cover;
+		fdg = new ForceDirectedGraph({ diameter: height / 2 });
+		messages = messages;
+	}
+
+	let isControlsOpen = false;
+	function onKeyDown(event) {
+		if (event.key === 'o') {
+			isControlsOpen = !isControlsOpen;
+			restart();
+		}
+	}
+
 	const symbolGraph = new ColouredSymbolGraph(brighten);
 	const symbolClassName = 'symbol';
-	const fdg = new ForceDirectedGraph({ diameter: height / 2 });
 	const rotateAbout = new Rotation();
 
 	function transformAll(sprites) {
@@ -115,9 +131,23 @@
 	});
 </script>
 
+{#if isControlsOpen}
+	<section class="controls">
+		<input
+			type="range"
+			bind:value={cover}
+			min="0.6"
+			max="1"
+			step="0.01"
+		/>{cover}
+		<button on:click={restart}>Apply</button>
+	</section>
+{/if}
 <section>
 	<Animation {width} {height} {sprites} {interval} />
 </section>
+
+<svelte:window on:keydown={onKeyDown} />
 
 <style>
 	section {
@@ -126,5 +156,11 @@
 		display: flex;
 		height: 100%;
 		justify-content: center;
+	}
+
+	.controls {
+		background-color: white;
+		color: black;
+		height: 20%;
 	}
 </style>

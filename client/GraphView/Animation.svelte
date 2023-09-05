@@ -12,8 +12,8 @@
 	const spriteSvgs = {};
 	const useAtmosphericPerspective = false;
 	const perspective = new Perspective({
-		vanishingPointY: height / 2,
-		vanishingPointX: width / 2,
+		vanishingPointY: document.documentElement.clientHeight / 2,
+		vanishingPointX: document.documentElement.clientWidth / 2,
 	});
 
 	function toScreen(states) {
