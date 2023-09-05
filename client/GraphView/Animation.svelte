@@ -6,8 +6,8 @@
 	export let interval = 41.6666666667; // 24 fps
 	export let x = 0;
 	export let y = 0;
-	export let width = 0;
-	export let height = 0;
+	export let width = document.documentElement.clientWidth;
+	export let height = document.documentElement.clientHeight;
 
 	const spriteSvgs = {};
 	const useAtmosphericPerspective = false;

@@ -12,9 +12,6 @@
 	export let messages = [];
 	export let interval = 41.6666666667 * 3;
 	export let cover = 0.8;
-	export let width = document.documentElement.clientWidth * cover;
-	export let height = document.documentElement.clientHeight * cover;
-
 	export let from = 0;
 	export let to = 100;
 	export let attraction = 0.02;
@@ -22,11 +19,9 @@
 	export let edgeOpacity = 0.4;
 	export let brighten = 0.6;
 
-	let fdg = new ForceDirectedGraph({ diameter: height / 2 });
+	let fdg = new ForceDirectedGraph({ diameter });
 	function restart() {
-		width = document.documentElement.clientWidth * cover;
-		height = document.documentElement.clientHeight * cover;
-		fdg = new ForceDirectedGraph({ diameter: height / 2 });
+		fdg = new ForceDirectedGraph({ diameter });
 		messages = messages;
 	}
 
@@ -121,6 +116,7 @@
 		return sprites;
 	}
 
+	$: diameter = (document.documentElement.clientHeight * cover) / 2;
 	$: sprites = buildSprites({
 		messages,
 		from,
@@ -144,7 +140,7 @@
 	</section>
 {/if}
 <section>
-	<Animation {width} {height} {sprites} {interval} />
+	<Animation {sprites} {interval} />
 </section>
 
 <svelte:window on:keydown={onKeyDown} />
